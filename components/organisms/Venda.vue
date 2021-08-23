@@ -150,25 +150,14 @@
         </v-card>
       </v-col>
     </v-row>
-    <PaymentMethods
-      :isActive="showPaymentMethods"
-      :total="total"
-      @realizarPagamento="realizarPagamento($event)"
-      @cancelar="cancelarPaymentMethod"
-    >
-    </PaymentMethods>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import PaymentMethods from './PaymentMethods.vue'
 import { PaymentMethod, ItemVenda } from '@/models'
 
 export default Vue.extend({
-  components: {
-    PaymentMethods,
-  },
   data() {
     return {
       cpf: '',

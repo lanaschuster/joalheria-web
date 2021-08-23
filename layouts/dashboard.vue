@@ -92,9 +92,9 @@ export default Vue.extend({
           to: 'my-account'
         },
         {
-          icon: 'mdi-account-tie',
-          title: 'Providers',
-          to: 'providers'
+          icon: 'mdi-store',
+          title: 'Suppliers',
+          to: 'suppliers'
         },
         {
           icon: 'mdi-ring',
