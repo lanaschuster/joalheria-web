@@ -1,0 +1,8 @@
+export { default as Inicio } from './Inicio.vue'
+export { default as MeuPerfil } from './MeuPerfil.vue'
+export { default as Caixa } from './Caixa.vue'
+export { default as Venda } from './Venda.vue'
+export { default as PaymentMethods } from './PaymentMethods.vue'
+export { default as Clientes } from './Clientes.vue'
+export { default as Usuarios } from './Usuarios.vue'
+export { default as Permissoes } from './Permissoes.vue'
