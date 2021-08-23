@@ -13,7 +13,7 @@
         <v-text-field
           outlined
           :readonly="isViewMode"
-          color="secondary"
+          color="primary"
           type="text"
           label="Nome"
           v-model="form.name"
@@ -25,7 +25,7 @@
         <v-text-field
           outlined
           :readonly="isViewMode"
-          color="secondary"
+          color="primary"
           type="text"
           label="Sobrenome"
           v-model="form.lastName"
@@ -37,7 +37,7 @@
         <v-text-field
           outlined
           :readonly="isViewMode"
-          color="secondary"
+          color="primary"
           type="email"
           label="E-mail"
           v-model="form.email"
@@ -49,7 +49,7 @@
         <v-text-field
           outlined
           :readonly="isViewMode"
-          color="secondary"
+          color="primary"
           type="password"
           label="Senha"
           v-model="form.password"
@@ -60,7 +60,7 @@
       <v-col v-if="!isViewMode" cols="12" sm="12" md="4">
         <v-text-field
           outlined
-          color="secondary"
+          color="primary"
           type="password"
           label="Confirmação de senha"
           v-model="confirmPassword"
@@ -72,13 +72,13 @@
         <v-select
           outlined
           :disabled="isViewMode"
-          color="secondary"
+          color="primary"
           :items="roles"
           v-model="form.role"
           label="Permissão"
         >
           <template #item="{ item }">
-            <span class="secondary--text">{{ item.name }}</span>
+            <span class="primary--text">{{ item.name }}</span>
           </template>
           <template #selection="{ item }">
             {{ item.name }}
@@ -88,7 +88,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" sm="12" md="12">
-        <v-btn outlined color="secondary" @click="voltar">Voltar</v-btn>
+        <v-btn outlined color="primary" @click="voltar">Voltar</v-btn>
         <v-btn type="submit" v-if="!isViewMode" color="primary">Salvar</v-btn>
       </v-col>
     </v-row>

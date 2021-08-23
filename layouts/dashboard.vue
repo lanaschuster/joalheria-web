@@ -84,37 +84,37 @@ export default Vue.extend({
         {
           icon: 'mdi-home',
           title: 'Home',
-          to: 'inicio'
+          to: 'home'
         },
         {
           icon: 'mdi-account-circle',
           title: 'My Account',
-          to: 'meu-perfil'
+          to: 'my-account'
         },
         {
           icon: 'mdi-account-tie',
           title: 'Providers',
-          to: '/'
+          to: 'providers'
         },
         {
           icon: 'mdi-ring',
           title: 'Products',
-          to: '/'
+          to: 'products'
         },
         {
           icon: 'mdi-label-multiple',
           title: 'Categories',
-          to: '/'
+          to: 'categories'
         },
         {
           icon: 'mdi-account',
           title: 'Users',
-          to: 'usuarios'
+          to: 'users'
         },
         {
           icon: 'mdi-card-account-details-star',
           title: 'Permissions',
-          to: 'permissoes'
+          to: 'permissions'
         }
       ],
       miniVariant: false,

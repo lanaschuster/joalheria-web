@@ -6,7 +6,7 @@
           outlined
           required
           :readonly="isViewMode"
-          color="secondary"
+          color="primary"
           type="text"
           label="Nome"
           v-model="form.role.name"
@@ -18,7 +18,7 @@
           outlined
           required
           :readonly="isViewMode"
-          color="secondary"
+          color="primary"
           type="text"
           label="Tag"
           v-model="form.role.tag"
@@ -30,13 +30,13 @@
         <v-select
           outlined
           :disabled="isViewMode"
-          color="secondary"
+          color="primary"
           :items="modules"
           v-model="form.module"
           label="Funcionalidade"
         >
           <template #item="{ item }">
-            <span class="secondary--text">{{ item }}</span>
+            <span class="primary--text">{{ item }}</span>
           </template>
           <template #selection="{ item }">
             {{ item }}
@@ -47,13 +47,13 @@
         <v-select
           outlined
           :disabled="isViewMode"
-          color="secondary"
+          color="primary"
           :items="actions"
           v-model="form.action"
           label="Ação"
         >
           <template #item="{ item }">
-            <span class="secondary--text">{{ item }}</span>
+            <span class="primary--text">{{ item }}</span>
           </template>
           <template #selection="{ item }">
             {{ item }}
@@ -127,7 +127,7 @@
         </v-simple-table>
       </v-col>
       <v-col cols="12" sm="12" md="12">
-        <v-btn @click="voltar">Voltar</v-btn>
+        <v-btn @click="voltar" color="primary" outlined>Voltar</v-btn>
         <v-btn color="success" type="submit" :loading="loading">Salvar</v-btn>
       </v-col>
     </v-row>
