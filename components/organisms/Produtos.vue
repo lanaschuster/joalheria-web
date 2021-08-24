@@ -8,10 +8,10 @@
           v-if="isListMode || isDeleteMode" 
           @id="id = $event" 
         />
-        <!-- <UsuarioForm 
+        <ProdutoForm 
           v-else 
           :id="+id"
-        /> -->
+        />
       </v-col>
     </v-row>
     <!-- <UsuarioDeleteDialog
@@ -24,12 +24,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Mode } from '@/models'
-import { ProdutoList } from '@/components/molecules'
+import { ProdutoList, ProdutoForm } from '@/components/molecules'
 import { screen } from '@/store'
 
 export default Vue.extend({
   components: {
-    ProdutoList
+    ProdutoList,
+    ProdutoForm
   },
   data() {
     return {
