@@ -5,6 +5,7 @@
     <Permissoes v-else-if="slug === 'permissions'" />
     <Fornecedores v-else-if="slug === 'suppliers'" />
     <Produtos v-else-if="slug === 'products'" />
+    <Categorias v-else-if="slug === 'categories'" />
     <Inicio v-else />
   </v-container>
 </template>
@@ -17,7 +18,8 @@ import {
   Usuarios,
   Permissoes,
   Fornecedores,
-  Produtos
+  Produtos,
+  Categorias
 } from '@/components/organisms'
 
 export default Vue.extend({
@@ -28,7 +30,8 @@ export default Vue.extend({
     Usuarios,
     Permissoes,
     Fornecedores,
-    Produtos
+    Produtos,
+    Categorias
   },
   computed: {
     slug() {
