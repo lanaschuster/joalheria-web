@@ -68,7 +68,7 @@ export default {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: '#63c132'
+          success: '#5f6b3a'
         }
       }
     }
