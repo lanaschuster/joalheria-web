@@ -8,13 +8,13 @@
           v-if="isListMode || isDeleteMode" 
           @id="id = $event" 
         />
-        <!-- <FornecedorForm 
+        <CategoriaForm 
           v-else 
           :id="+id"
-        /> -->
+        />
       </v-col>
     </v-row>
-    <!-- <FornecedorDeleteDialog
+    <!-- <CategoriaDeleteDialog
       :id="id ? +id : -1"
       :isActive="isDeleteMode"
     /> -->
@@ -25,13 +25,15 @@
 import Vue from 'vue'
 import { Mode } from '@/models'
 import { 
-  CategoriaList 
+  CategoriaList,
+  CategoriaForm,
 } from '@/components/molecules'
 import { screen } from '@/store'
 
 export default Vue.extend({
   components: {
-    CategoriaList
+    CategoriaList,
+    CategoriaForm
   },
   data() {
     return {
