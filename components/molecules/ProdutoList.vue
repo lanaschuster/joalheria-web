@@ -24,7 +24,36 @@
         :loading="loading"
         :options.sync="options"
         loading-text="Fetching products..."
-      ></v-data-table>
+      >
+        <template v-slot:[`item.action`]="{ item }">
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-on="on" v-bind="attrs" icon @click.stop="visualizar(item.id)">
+                <v-icon> mdi-magnify </v-icon>
+              </v-btn>
+            </template>
+            <span>Visualizar</span>
+          </v-tooltip>
+
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-on="on" v-bind="attrs" icon @click.stop="editar(item.id)">
+                <v-icon> mdi-pencil </v-icon>
+              </v-btn>
+            </template>
+            <span>Editar</span>
+          </v-tooltip>
+
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-on="on" v-bind="attrs" icon @click.stop="excluir(item.id)">
+                <v-icon> mdi-delete </v-icon>
+              </v-btn>
+            </template>
+            <span>Excluir</span>
+          </v-tooltip>
+        </template>
+      </v-data-table>
     </v-col>
   </v-row>
 </template>
@@ -50,16 +79,16 @@ export default Vue.extend({
       products: [],
       headers: [
         {
-          text: 'Id',
-          sortable: true,
-          align: 'start',
-          value: 'id',
-        },
-        {
           text: 'Code',
           sortable: true,
           align: 'start',
           value: 'code',
+        },
+        {
+          text: 'SKU',
+          sortable: true,
+          align: 'start',
+          value: 'sku',
         },
         {
           text: 'Name',
@@ -88,7 +117,8 @@ export default Vue.extend({
         {
           text: 'Quantity',
           sortable: true,
-          align: 'start'
+          align: 'start',
+          value: 'quantity',
         },
         {
           text: 'Profit',

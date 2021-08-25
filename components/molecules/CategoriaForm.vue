@@ -16,6 +16,7 @@
       <v-col cols="12" sm="12" md="12">
         <v-textarea
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="textarea"

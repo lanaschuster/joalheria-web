@@ -14,7 +14,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="12" md="4">
+        <v-col cols="12" sm="12" md="2">
           <v-text-field
             outlined
             :readonly="isViewMode"
@@ -23,6 +23,17 @@
             label="Code"
             v-model="form.code"
             placeholder="Code"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="text"
+            label="SKU"
+            v-model="form.sku"
+            placeholder="SKU"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="12" md="4">
@@ -48,7 +59,7 @@
             :disabled="isViewMode"
             color="primary"
             :items="suppliers"
-            v-model="form.supplier"
+            v-model="form.provider"
             label="Supplier"
           >
             <template #item="{ item }">
@@ -191,7 +202,7 @@ export default Vue.extend({
         totalCost: 0,
         price: 0,
         profit: 0,
-        supplier: {} as Fornecedor,
+        provider: {} as Fornecedor,
         category: {} as Categoria,
       } as Produto,
       profit: 0,
@@ -216,7 +227,7 @@ export default Vue.extend({
 
       let produto = { ...this.form }
       produto.categoryId = produto.category.id
-      produto.providerId = produto.supplier.id
+      produto.providerId = produto.provider.id
 
       $axios.$post(`/api/products`, produto)
         .then(r => {
@@ -239,10 +250,51 @@ export default Vue.extend({
         })
     },
     alterar() {
-      // TODO
+      this.loading = true
+
+      let produto = { ...this.form }
+      produto.categoryId = produto.category.id
+      produto.providerId = produto.provider.id
+
+      $axios.$put(`/api/products/${this.id}`, produto)
+        .then(r => {
+          this.loading = false
+          this.voltar()
+          snackbar.setMessage('Produto editado com sucesso')
+          snackbar.setSnackbar(true)
+        })
+        .catch(error => {
+          this.loading = false
+          if (error.response && error.response.data) {
+            snackbar.setMessage(error.response.data.message)
+          } else {
+            snackbar.setMessage(
+              'Não foi possível editar o produto.'
+            )
+          }
+
+          snackbar.setSnackbar(true)
+        })
     },
     find() {
-      // TODO
+      this.loading = true
+      $axios.$get(`/api/products/${this.id}`)
+        .then(r => {
+          this.loading = false
+          this.form = r
+        })
+        .catch(error => {
+          this.loading = false
+          if (error.response && error.response.data) {
+            snackbar.setMessage(error.response.data.error)
+          } else {
+            snackbar.setMessage(
+              'Não foi possível consultar o produto selecionado.'
+            )
+          }
+
+          snackbar.setSnackbar(true)
+        })
     },
     findCategories() {
       this.loading = true

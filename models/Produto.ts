@@ -6,6 +6,7 @@ interface Produto {
   name: string,
   description: string,
   code: string,
+  sku?: string,
   image: string,
   
   quantity: number,
@@ -13,10 +14,11 @@ interface Produto {
   shipCost: number,
   totalCost: number,
   price: number,
+  profit?: number,
 
   category: Categoria,
   categoryId?: string,
-  supplier: Fornecedor,
+  provider: Fornecedor,
   providerId?: string
 }
 
