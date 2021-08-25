@@ -155,7 +155,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { PaymentMethod, ItemVenda } from '@/models'
 
 export default Vue.extend({
   data() {
@@ -174,7 +173,7 @@ export default Vue.extend({
           unitValue: 0.5,
           total: 1,
         },
-      ] as ItemVenda[],
+      ],
       currentProduct: {
         name: 'Maçã verde',
         code: '0000001250',
@@ -183,8 +182,8 @@ export default Vue.extend({
         unit: 'KG',
         unitValue: 0.5,
         total: 1,
-      } as ItemVenda,
-      paymentMethod: {} as PaymentMethod,
+      },
+      paymentMethod: {},
     }
   },
   methods: {
@@ -197,12 +196,12 @@ export default Vue.extend({
       this.$store.dispatch('setMessage', 'Venda Cancelada')
       this.$store.dispatch('setSnackbar', true)
     },
-    realizarPagamento(paymentMethod: PaymentMethod) {
-      console.log(paymentMethod)
-    },
+    // realizarPagamento(paymentMethod) {
+    //   console.log(paymentMethod)
+    // },
     cancelarPaymentMethod() {
       this.showPaymentMethods = false
-      this.paymentMethod = {}  as PaymentMethod
+      this.paymentMethod = {}
     }
   },
   computed: {

@@ -12,6 +12,19 @@
             placeholder="Name"
           ></v-text-field>
         </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="12" md="4">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="text"
+            label="Code"
+            v-model="form.code"
+            placeholder="Code"
+          ></v-text-field>
+        </v-col>
         <v-col cols="12" sm="12" md="4">
           <v-select
             outlined
@@ -46,6 +59,86 @@
             </template>
           </v-select>
         </v-col>
+
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Unit cost"
+            v-model="form.unitCost"
+            placeholder="Unit cost"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="number"
+            min="0"
+            step="1"
+            label="Quantity"
+            v-model="form.quantity"
+            placeholder="Quantity"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Shipping cost"
+            v-model="form.shipCost"
+            placeholder="Shipping cost"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Total cost"
+            v-model="form.totalCost"
+            placeholder="Total cost"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Sale price"
+            v-model="form.price"
+            placeholder="Sale price"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="2">
+          <v-text-field
+            outlined
+            :readonly="isViewMode"
+            color="primary"
+            type="number"
+            min="0"
+            step="0.01"
+            label="Profit"
+            v-model="profit"
+            placeholder="Profit"
+          ></v-text-field>
+        </v-col>
+
         <v-col cols="12" sm="12" md="12">
           <v-textarea
             outlined
@@ -69,7 +162,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Mode } from '@/models'
+import { Mode, Produto, Fornecedor, Categoria } from '@/models'
 import { $axios } from '@/utils/nuxt-instance'
 import { screen, snackbar } from '@/utils/store-access'
 
@@ -98,9 +191,10 @@ export default Vue.extend({
         totalCost: 0,
         price: 0,
         profit: 0,
-        supplier: {},
-        category: {},
-      },
+        supplier: {} as Fornecedor,
+        category: {} as Categoria,
+      } as Produto,
+      profit: 0,
       suppliers: [],
       categories: [],
       loading: false
@@ -111,6 +205,40 @@ export default Vue.extend({
       screen.setMode(Mode.LIST)
     },
     onSubmit() {
+      if (screen.$mode === Mode.ADD) {
+        this.cadastrar()
+      } else if (screen.$mode === Mode.EDIT) {
+        this.alterar()
+      }
+    },
+    cadastrar() {
+      this.loading = true
+
+      let produto = { ...this.form }
+      produto.categoryId = produto.category.id
+      produto.providerId = produto.supplier.id
+
+      $axios.$post(`/api/products`, produto)
+        .then(r => {
+          this.loading = false
+          this.voltar()
+          snackbar.setMessage('Produto cadastrado com sucesso')
+          snackbar.setSnackbar(true)
+        })
+        .catch(error => {
+          this.loading = false
+          if (error.response && error.response.data) {
+            snackbar.setMessage(error.response.data.message)
+          } else {
+            snackbar.setMessage(
+              'Não foi possível cadastrar o produto.'
+            )
+          }
+
+          snackbar.setSnackbar(true)
+        })
+    },
+    alterar() {
       // TODO
     },
     find() {

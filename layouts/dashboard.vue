@@ -48,7 +48,10 @@
       >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title>
+        {{ title }}
+        <v-icon>mdi-diamond-stone</v-icon>
+      </v-toolbar-title>
       <v-spacer />
     </v-app-bar>
     <v-main>
