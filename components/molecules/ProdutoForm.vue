@@ -213,6 +213,7 @@ export default Vue.extend({
   },
   methods: {
     voltar() {
+      this.$emit('id', undefined)
       screen.setMode(Mode.LIST)
     },
     onSubmit() {

@@ -9,6 +9,7 @@
           @id="id = $event" 
         />
         <UsuarioForm 
+          @id="id = $event" 
           v-else 
           :id="+id"
         />

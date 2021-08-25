@@ -10,6 +10,7 @@
         />
         <ProdutoForm 
           v-else 
+          @id="id = $event" 
           :id="+id"
         />
       </v-col>

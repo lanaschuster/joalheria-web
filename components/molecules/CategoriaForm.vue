@@ -115,6 +115,7 @@ export default Vue.extend({
         })
     },
     voltar() {
+      this.$emit('id', undefined)
       screen.setMode(Mode.LIST)
     },
     find() {
