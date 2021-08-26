@@ -7,7 +7,7 @@ interface Produto {
   description: string,
   code: string,
   sku?: string,
-  image: string,
+  image: string | File,
   
   quantity: number,
   unitCost: number,
