@@ -221,15 +221,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível consultar os perfis, tente mais tarde.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     edit() {},
@@ -245,15 +236,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível consultar, tente mais tarde.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     voltar() {

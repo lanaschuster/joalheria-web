@@ -148,15 +148,6 @@ export default Vue.extend({
         })
         .catch(error => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.message)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível cadastrar o usuário.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     alterar() {
@@ -174,15 +165,6 @@ export default Vue.extend({
         })
         .catch(error => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.message)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível editar o usuário.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     voltar() {
@@ -198,15 +180,6 @@ export default Vue.extend({
         })
         .catch(error => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível consultar o usuário selecionado.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     findRoles() {
@@ -218,15 +191,6 @@ export default Vue.extend({
         })
         .catch(error => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível consultar as permissões.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     }
   },

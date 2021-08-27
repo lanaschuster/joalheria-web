@@ -65,15 +65,6 @@ export default Vue.extend({
         .catch(error => {
           this.loading = false
           this.close()
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível excluir o usuário, tente mais tarde.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     close() {

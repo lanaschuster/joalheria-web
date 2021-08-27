@@ -177,15 +177,6 @@ export default Vue.extend({
         })
         .catch(error => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível consultar os produtos, tente mais tarde.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     visualizar(id: number) {

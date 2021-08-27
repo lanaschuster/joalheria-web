@@ -289,13 +289,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.message)
-          } else {
-            snackbar.setMessage('Não foi possível cadastrar o produto.')
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     alterar() {
@@ -311,13 +304,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.message)
-          } else {
-            snackbar.setMessage('Não foi possível editar o produto.')
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     find() {
@@ -332,15 +318,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage(
-              'Não foi possível consultar o produto selecionado.'
-            )
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     findCategories() {
@@ -353,13 +330,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage('Não foi possível consultar as categorias.')
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
     findSuppliers() {
@@ -372,13 +342,6 @@ export default Vue.extend({
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
-          } else {
-            snackbar.setMessage('Não foi possível consultar as categorias.')
-          }
-
-          snackbar.setSnackbar(true)
         })
     },
   },

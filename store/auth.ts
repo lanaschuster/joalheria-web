@@ -34,6 +34,7 @@ export default class Auth extends VuexModule {
   @Mutation
   private SET_ACCESS_TOKEN(accessToken: string) {
     this.accessToken = accessToken
+    $cookies.remove('token')
     $cookies.set('token', accessToken, {
       maxAge: 3600
     })
@@ -42,6 +43,7 @@ export default class Auth extends VuexModule {
   @Mutation
   private SET_REFRESH_TOKEN(refreshToken: string) {
     this.refreshToken = refreshToken
+    $cookies.remove('refresh')
     $cookies.set('refresh', refreshToken, {
       maxAge: 3600
     })
@@ -101,5 +103,28 @@ export default class Auth extends VuexModule {
     window.$nuxt.$router.push({
       path: '/'
     })
+  }
+
+  @Action
+  public refresh(refreshToken: string) {
+    try {
+      $axios.post('/auth/refresh', { refreshToken })
+        .then(result => {
+          this.context.commit('SET_REFRESH_TOKEN', result.data.refreshToken)
+          this.context.commit('SET_ACCESS_TOKEN', result.data.accessToken)
+        })
+        .catch(error => {
+          this.context.commit('LOGOUT')
+          window.$nuxt.$router.push({
+            path: '/'
+          })
+          
+          snackbar.setMessage('A sessão expirou. Realize o login novamente')
+          snackbar.setSnackbar(true)
+        })
+    } catch (err) {
+      snackbar.setMessage('Não foi possível atualizar a sessão')
+      snackbar.setSnackbar(true)
+    }
   }
 }
