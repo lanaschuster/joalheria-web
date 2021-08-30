@@ -53,6 +53,16 @@
             <span>Excluir</span>
           </v-tooltip>
         </template>
+        <template v-slot:[`item.image`]="{ item }">
+          <v-img
+            contain
+            height="100"
+            width="100"
+            :src="imagePath(item.image)" 
+            alt="Image"
+          >
+          </v-img>
+        </template>
       </v-data-table>
     </v-col>
   </v-row>
@@ -78,6 +88,12 @@ export default Vue.extend({
       loading: false,
       products: [],
       headers: [
+        {
+          text: 'Image',
+          sortable: true,
+          align: 'start',
+          value: 'image',
+        },
         {
           text: 'Code',
           sortable: true,
@@ -199,6 +215,9 @@ export default Vue.extend({
     },
     add() {
       screen.setMode(Mode.ADD)
+    },
+    imagePath(img: string) {
+      return `${process.env.apiUrl}/${img}`
     }
   },
   created() {
