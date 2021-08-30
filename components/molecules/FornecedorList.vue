@@ -57,7 +57,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { $axios } from '@/utils/nuxt-instance'
-import { screen, snackbar } from '@/utils/store-access'
+import { screen } from '@/utils/store-access'
 import { Mode } from '@/models'
 
 export default Vue.extend({
@@ -113,8 +113,14 @@ export default Vue.extend({
       }
     },
     options: {
-      handler() {
-        this.find()
+       handler(newVal, oldVal) {
+        if (
+          newVal.filter !== oldVal.filter ||
+          newVal.page !== oldVal.page ||
+          newVal.itemsPerPage !== oldVal.itemsPerPage
+        ) {
+          this.find()
+        }
       },
       deep: true
     }
@@ -165,6 +171,13 @@ export default Vue.extend({
       screen.setMode(Mode.DELETE)
       this.$emit('id', id)
     },
+  },
+  created() {
+    if (this.isListMode) {
+      this.find()
+    } else {
+      screen.setMode(Mode.LIST)
+    }
   }
 })
 </script>

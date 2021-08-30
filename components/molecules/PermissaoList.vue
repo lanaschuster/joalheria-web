@@ -126,21 +126,14 @@ export default Vue.extend({
       if (val) {
         this.find()
       }
-    },
-    options: {
-      handler() {
-        this.find()
-      },
-      deep: true
-    }
-  },
-  mounted() {
-    if (screen.$mode === Mode.LIST) {
-      this.find()
     }
   },
   created() {
-    screen.setMode(Mode.LIST)
+    if (this.isListMode) {
+      this.find()
+    } else {
+      screen.setMode(Mode.LIST)
+    }
   }
 })
 </script>

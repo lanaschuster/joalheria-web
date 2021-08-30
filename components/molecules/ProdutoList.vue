@@ -142,8 +142,14 @@ export default Vue.extend({
       }
     },
     options: {
-      handler() {
-        this.find()
+      handler(newVal, oldVal) {
+        if (
+          newVal.filter !== oldVal.filter ||
+          newVal.page !== oldVal.page ||
+          newVal.itemsPerPage !== oldVal.itemsPerPage
+        ) {
+          this.find()
+        }
       },
       deep: true
     }
@@ -195,13 +201,12 @@ export default Vue.extend({
       screen.setMode(Mode.ADD)
     }
   },
-  mounted() {
-    if (screen.$mode === Mode.LIST) {
-      this.find()
-    }
-  },
   created() {
-    screen.setMode(Mode.LIST)
+    if (this.isListMode) {
+      this.find()
+    } else {
+      screen.setMode(Mode.LIST)
+    }
   }
 })
 </script>

@@ -8,12 +8,8 @@
         placeholder="Digite para filtrar por nome, sobrenome e e-mail"
       ></v-text-field>
     </v-col>
-    <v-col 
-      cols="12" sm="12" md="9" 
-      class="d-flex align-center justify-end">
-      <v-btn @click="novoUsuario" color="success">
-        Novo usuário
-      </v-btn>
+    <v-col cols="12" sm="12" md="9" class="d-flex align-center justify-end">
+      <v-btn @click="novoUsuario" color="success"> Novo usuário </v-btn>
     </v-col>
     <v-col cols="12" md="12">
       <v-data-table
@@ -28,7 +24,12 @@
         <template v-slot:[`item.action`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn v-on="on" v-bind="attrs" icon @click.stop="visualizar(item.id)">
+              <v-btn
+                v-on="on"
+                v-bind="attrs"
+                icon
+                @click.stop="visualizar(item.id)"
+              >
                 <v-icon> mdi-magnify </v-icon>
               </v-btn>
             </template>
@@ -37,7 +38,12 @@
 
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn v-on="on" v-bind="attrs" icon @click.stop="editar(item.id)">
+              <v-btn
+                v-on="on"
+                v-bind="attrs"
+                icon
+                @click.stop="editar(item.id)"
+              >
                 <v-icon> mdi-pencil </v-icon>
               </v-btn>
             </template>
@@ -46,7 +52,12 @@
 
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn v-on="on" v-bind="attrs" icon @click.stop="excluir(item.id)">
+              <v-btn
+                v-on="on"
+                v-bind="attrs"
+                icon
+                @click.stop="excluir(item.id)"
+              >
                 <v-icon> mdi-delete </v-icon>
               </v-btn>
             </template>
@@ -88,7 +99,7 @@ export default Vue.extend({
         pageCount: 0,
         page: 1,
         itemsPerPage: 10,
-        totalItems: 0
+        totalItems: 0,
       },
 
       loading: false,
@@ -140,46 +151,54 @@ export default Vue.extend({
     }
   },
   watch: {
-    isListMode: function(val) {
+    isListMode: function (val) {
       if (val) {
         this.find()
       }
     },
     options: {
-      handler() {
-        this.find()
+      handler(newVal, oldVal) {
+        if (
+          newVal.filter !== oldVal.filter ||
+          newVal.page !== oldVal.page ||
+          newVal.itemsPerPage !== oldVal.itemsPerPage
+        ) {
+          this.find()
+        }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     isListMode() {
       return screen.$mode === Mode.LIST
-    }
+    },
   },
   methods: {
     find() {
       this.loading = true
-      
+
       const filter = this.options.filter
-      const size = this.options.itemsPerPage > -1
-        ? this.options.itemsPerPage 
-        : this.options.totalItems
+      const size =
+        this.options.itemsPerPage > -1
+          ? this.options.itemsPerPage
+          : this.options.totalItems
 
       let url = `/api/users?page=${this.options.page}&size=${size}`
-      
+
       if (filter) {
         url = `${url}&filter=${filter}`
       }
 
-      $axios.$get(url)
-        .then(r => {
+      $axios
+        .$get(url)
+        .then((r) => {
           this.loading = false
           this.users = r.result
           this.options.pageCount = r.pages
           this.options.totalItems = r.count
         })
-        .catch(error => {
+        .catch((error) => {
           this.loading = false
         })
     },
@@ -197,16 +216,15 @@ export default Vue.extend({
     },
     novoUsuario() {
       screen.setMode(Mode.ADD)
-    }
-  },
-  mounted() {
-    if (screen.$mode === Mode.LIST) {
-      this.find()
-    }
+    },
   },
   created() {
-    screen.setMode(Mode.LIST)
-  }
+    if (this.isListMode) {
+      this.find()
+    } else {
+      screen.setMode(Mode.LIST)
+    }
+  },
 })
 </script>
 
