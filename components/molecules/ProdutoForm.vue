@@ -1,9 +1,30 @@
 <template>
   <form @submit.prevent="onSubmit">
     <v-row>
+      <v-col cols="12" sm="12" md="2">
+        <v-hover v-slot="{ hover }">
+          <v-avatar size="150">
+            <v-img style="position: absolute" :src="imagePreview" alt="Avatar">
+            </v-img>
+
+            <v-img v-if="hover" src="/img/image-hover.svg" alt="Avatar">
+              <input
+                type="file"
+                accept="image/*"
+                :disabled="isViewMode"
+                style="opacity: 0; cursor: pointer"
+                @change="changeImage($event)"
+              />
+            </v-img>
+          </v-avatar>
+        </v-hover>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12" sm="12" md="4">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="text"
@@ -17,6 +38,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="text"
@@ -28,6 +50,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="text"
@@ -39,6 +62,7 @@
       <v-col cols="12" sm="12" md="4">
         <v-select
           outlined
+          required
           :disabled="isViewMode"
           color="primary"
           :items="categories"
@@ -56,6 +80,7 @@
       <v-col cols="12" sm="12" md="4">
         <v-select
           outlined
+          required
           :disabled="isViewMode"
           color="primary"
           :items="suppliers"
@@ -74,6 +99,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="number"
@@ -87,6 +113,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="number"
@@ -100,6 +127,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="number"
@@ -113,6 +141,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="number"
@@ -126,6 +155,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="number"
@@ -139,6 +169,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="number"
@@ -150,9 +181,10 @@
         ></v-text-field>
       </v-col>
 
-      <v-col cols="12" sm="12" md="6">
+      <v-col cols="12" sm="12" md="12">
         <v-textarea
           outlined
+          required
           :readonly="isViewMode"
           color="primary"
           type="text"
@@ -160,24 +192,6 @@
           v-model="form.description"
           placeholder="Description"
         ></v-textarea>
-      </v-col>
-      <v-col cols="12" sm="12" md="6">
-        <v-hover v-slot="{ hover }">
-          <v-avatar size="150">
-            <v-img style="position: absolute" :src="imagePreview" alt="Avatar">
-            </v-img>
-
-            <v-img v-if="hover" src="/img/image-hover.svg" alt="Avatar">
-              <input
-                type="file"
-                accept="image/*"
-                :disabled="isViewMode"
-                style="opacity: 0; cursor: pointer"
-                @change="changeImage($event)"
-              />
-            </v-img>
-          </v-avatar>
-        </v-hover>
       </v-col>
     </v-row>
     <v-row>

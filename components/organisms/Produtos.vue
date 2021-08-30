@@ -57,6 +57,8 @@ export default Vue.extend({
         return `Editando produto ID: ` + this.id
       } else if (screen.$mode === Mode.LIST) {
         return 'Listagem de produtos'
+      } else if (screen.$mode === Mode.ADD) {
+        return 'Selecione uma imagem e preencha os campos corretamente.'
       }
 
       return ''
