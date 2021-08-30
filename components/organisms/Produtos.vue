@@ -15,23 +15,24 @@
         />
       </v-col>
     </v-row>
-    <!-- <UsuarioDeleteDialog
+    <ProdutoDeleteDialog
       :id="id ? +id : -1"
       :isActive="isDeleteMode"
-    /> -->
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Mode } from '@/models'
-import { ProdutoList, ProdutoForm } from '@/components/molecules'
+import { ProdutoList, ProdutoForm, ProdutoDeleteDialog } from '@/components/molecules'
 import { screen } from '@/store'
 
 export default Vue.extend({
   components: {
     ProdutoList,
-    ProdutoForm
+    ProdutoForm,
+    ProdutoDeleteDialog
   },
   data() {
     return {
@@ -52,7 +53,7 @@ export default Vue.extend({
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'produto ID: ' + this.id
+        return 'Produto ID: ' + this.id
       } else if (screen.$mode === Mode.EDIT) {
         return `Editando produto ID: ` + this.id
       } else if (screen.$mode === Mode.LIST) {
