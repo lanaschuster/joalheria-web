@@ -7,10 +7,16 @@
             class="full-height background d-flex align-center justify-center" 
             cols="12" sm="12" md="4"
           >
-            <h1 class="white--text">Jewellery Web Admin</h1>
+            <v-img
+              contain
+              height="300"
+              width="300"
+              src="/img/logo.png" 
+              alt="Logo"
+            ></v-img>
           </v-col>
           <v-col 
-            class="full-height d-flex align-center justify-center" 
+            class="full-height d-flex align-center justify-center pl-14 pr-14" 
             cols="12" sm="12" md="8"
           >
             <Nuxt />
