@@ -169,8 +169,7 @@
       <v-col cols="12" sm="12" md="2">
         <v-text-field
           outlined
-          required
-          :readonly="isViewMode"
+          readonly
           color="primary"
           type="number"
           min="0"
@@ -216,9 +215,12 @@ export default Vue.extend({
     },
   },
   computed: {
-    isViewMode() {
+    isViewMode(): boolean {
       return screen.$mode === Mode.VIEW
     },
+    profit(): number {
+      return this.form.price - this.form.unitCost
+    }
   },
   data() {
     return {
@@ -236,7 +238,6 @@ export default Vue.extend({
         category: {} as Categoria,
         image: '/img/image.svg',
       } as Produto,
-      profit: 0,
       suppliers: [],
       categories: [],
       loading: false,
