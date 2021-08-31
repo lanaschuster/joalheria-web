@@ -4,7 +4,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s',
-    title: 'Jewellery Admin',
+    title: 'D\'alma & Grace Jewellery Admin',
     htmlAttrs: {
       lang: 'en'
     },
