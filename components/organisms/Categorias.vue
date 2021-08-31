@@ -15,10 +15,10 @@
         />
       </v-col>
     </v-row>
-    <!-- <CategoriaDeleteDialog
+    <CategoriaDeleteDialog
       :id="id ? +id : -1"
       :isActive="isDeleteMode"
-    /> -->
+    />
   </div>
 </template>
 
@@ -28,13 +28,15 @@ import { Mode } from '@/models'
 import { 
   CategoriaList,
   CategoriaForm,
+  CategoriaDeleteDialog
 } from '@/components/molecules'
 import { screen } from '@/store'
 
 export default Vue.extend({
   components: {
     CategoriaList,
-    CategoriaForm
+    CategoriaForm,
+    CategoriaDeleteDialog
   },
   data() {
     return {
