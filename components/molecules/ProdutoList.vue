@@ -54,14 +54,15 @@
           </v-tooltip>
         </template>
         <template v-slot:[`item.image`]="{ item }">
-          <v-img
-            contain
-            height="100"
-            width="100"
-            :src="imagePath(item.image)" 
-            alt="Image"
-          >
-          </v-img>
+          <v-avatar size="100" class="mt-2 mb-2">
+            <v-img
+              height="100"
+              width="100"
+              lazy-src="/img/image.svg"
+              :src="imagePath(item.image)" 
+              alt="Image"
+            ></v-img>
+          </v-avatar>
         </template>
       </v-data-table>
     </v-col>
@@ -91,19 +92,19 @@ export default Vue.extend({
         {
           text: 'Image',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'image',
         },
         {
           text: 'Code',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'code',
         },
         {
           text: 'SKU',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'sku',
         },
         {
@@ -127,19 +128,19 @@ export default Vue.extend({
         {
           text: 'Price',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'price',
         },
         {
           text: 'Quantity',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'quantity',
         },
         {
           text: 'Profit',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'profit',
         },
         {

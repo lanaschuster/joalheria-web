@@ -4,7 +4,12 @@
       <v-col cols="12" sm="12" md="2">
         <v-hover v-slot="{ hover }">
           <v-avatar size="150">
-            <v-img style="position: absolute" :src="imagePreview" alt="Avatar">
+            <v-img
+              lazy-src="/img/image.svg"
+              style="position: absolute"
+              :src="imagePreview"
+              alt="Avatar"
+            >
             </v-img>
 
             <v-img v-if="hover" src="/img/image-hover.svg" alt="Avatar">
@@ -220,7 +225,7 @@ export default Vue.extend({
     },
     profit(): number {
       return this.form.price - this.form.unitCost
-    }
+    },
   },
   data() {
     return {
@@ -241,7 +246,7 @@ export default Vue.extend({
       suppliers: [],
       categories: [],
       loading: false,
-      imagePreview: '/img/image.svg'
+      imagePreview: '/img/image.svg',
     }
   },
   methods: {
@@ -250,15 +255,14 @@ export default Vue.extend({
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = () => resolve(reader.result)
-        reader.onerror = error => reject(error)
+        reader.onerror = (error) => reject(error)
       })
     },
     changeImage(event: any) {
       this.form.image = event.target.files[0]
-      this.toBase64(this.form.image as File)
-        .then(r => {
-          this.imagePreview = r as string
-        })
+      this.toBase64(this.form.image as File).then((r) => {
+        this.imagePreview = r as string
+      })
     },
     voltar() {
       this.$emit('id', undefined)
@@ -276,19 +280,18 @@ export default Vue.extend({
       formData.append('name', this.form.name)
       formData.append('description', this.form.description)
       formData.append('code', this.form.code)
-      if (this.form.sku) 
-        formData.append('sku', this.form.sku)
+      if (this.form.sku) formData.append('sku', this.form.sku)
       formData.append('image', this.form.image)
       formData.append('quantity', this.form.quantity.toString())
       formData.append('unitCost', this.form.unitCost.toString())
       formData.append('shipCost', this.form.shipCost.toString())
       formData.append('totalCost', this.form.totalCost.toString())
       formData.append('price', this.form.price.toString())
-      if (this.form.profit)
-        formData.append('profit', this.form.profit.toString())
-      if (this.form.category.id) 
+      if (this.profit)
+        formData.append('profit', this.profit.toString())
+      if (this.form.category.id)
         formData.append('categoryId', this.form.category.id)
-      if (this.form.provider.id) 
+      if (this.form.provider.id)
         formData.append('providerId', this.form.provider.id)
       return formData
     },
