@@ -1,75 +1,132 @@
 <template>
   <div class="component">
     <h1 class="title text-h4 mb-8">Meu Perfil</h1>
-    <v-card class="mb-6">
-      <v-card-text>
-        <v-row>
-          <v-col cols="12" sm="12" md="4"
-            class="d-flex align-center justify-center"
-          >
-            <v-avatar
-              color="secondary"
-              size="84"
-            ></v-avatar>
-          </v-col>
-          <v-col cols="12" sm="12" md="8" class="text-body-1">
-            <section>
-              <label class="font-weight-bold">Nome:</label>
-              <span>John Doe</span><br>
+    <v-row justify="center">
+      <v-col cols="12" sm="12" md="8">
+        <v-card class="mb-6">
+          <v-card-text>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="12"
+                md="4"
+                class="d-flex align-center justify-center"
+              >
+                <v-hover v-slot="{ hover }">
+                  <v-avatar size="240">
+                    <v-img
+                      lazy-src="/img/image.svg"
+                      style="position: absolute"
+                      :src="imagePreview"
+                      alt="Avatar"
+                    >
+                    </v-img>
 
-              <label class="font-weight-bold">Função:</label>
-              <span>Operador de Caixa</span><br>
+                    <v-img v-if="hover" src="/img/image-hover.svg" alt="Avatar">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style="opacity: 0; cursor: pointer"
+                        @change="changeImage($event)"
+                      />
+                    </v-img>
+                  </v-avatar>
+                </v-hover>
+              </v-col>
+              <v-col cols="12" sm="12" md="8" class="text-body-1 d-flex align-center flex-column">
+                
+                <label class="font-weight-bold">Nome</label>
+                <span>{{ `${user.name} ${user.lastName}` }}</span>
 
-              <label v-if="!fullProfile" class="font-weight-bold">Caixa:</label>
-              <span v-if="!fullProfile" class="success--text">Aberto</span>
-            </section>
+                <label class="font-weight-bold">Função</label>
+                <span>{{ user.role.name }}</span>
+              
 
-            <section v-if="fullProfile" class="full-profile">
-              <label class="font-weight-bold">E-mail:</label>
-              <span>johndoe@email.com</span><br>
-
-              <label class="font-weight-bold">Telefone:</label>
-              <span>(45) 1234-1234</span><br>
-
-              <label class="font-weight-bold">Celular:</label>
-              <span>(45) 1234-1234</span><br>
-
-              <label class="font-weight-bold">Endereço:</label>
-              <span>Rua xpto, 32, bairro teste, Foz do Iguaçu - PR</span><br>
-            </section>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <v-btn v-if="!fullProfile" color="primary" @click="fullProfile = true">
-      Ver perfil completo
-    </v-btn>
-    <v-btn v-if="fullProfile" color="primary" @click="editProfile">
-      Editar perfil
-    </v-btn>
-    <v-btn v-if="fullProfile" outlined color="secondary" @click="fullProfile = false">
-      Voltar
-    </v-btn>
+                <label class="font-weight-bold">E-mail</label>
+                <span>{{ user.email }}</span>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { User } from '@/models'
+import { $axios } from '@/utils/nuxt-instance'
+import { snackbar } from '@/utils/store-access'
 
 export default Vue.extend({
   data() {
     return {
-      fullProfile: false
+      loading: false,
+      user: {
+        role: {
+          name: '',
+        },
+        name: '',
+        lastName: '',
+        email: '',
+        avatar: '/img/image.svg'
+      },
+      imagePreview: '/img/image.svg',
     }
   },
   methods: {
-    editProfile() {
-      // TODO
+    find() {
+      this.loading = true
+      $axios
+        .$get(`/api/users/myself`)
+        .then((r) => {
+          this.loading = false
+          this.user = r
+          this.user.avatar = `${process.env.apiUrl}/${this.user.avatar}`
+          this.imagePreview = this.user.avatar
+        })
+        .catch((error) => {
+          this.loading = false
+        })
+    },
+    toBase64(file: File) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = (error) => reject(error)
+      })
+    },
+    changeImage(event: any) {
+      this.user.avatar = event.target.files[0]
+      this.toBase64(this.user.avatar as any).then((r) => {
+        this.imagePreview = r as string
+        this.uploadAvatar(this.user.avatar as any)
+      })
+    },
+    uploadAvatar(avatar: File) {
+      this.loading = true
+      let formData = new FormData()
+      formData.append('avatar', avatar)
+
+      $axios
+        .$post(`/api/users/upload`, formData)
+        .then((r) => {
+          this.loading = false
+          snackbar.setMessage('Avatar alterado com sucesso')
+          snackbar.setSnackbar(true)
+        })
+        .catch((error) => {
+          this.loading = false
+        })
     }
-  }
+  },
+  created() {
+    this.find()
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-.component {}
 </style>
