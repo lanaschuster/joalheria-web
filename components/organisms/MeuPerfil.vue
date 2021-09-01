@@ -83,8 +83,10 @@ export default Vue.extend({
         .then((r) => {
           this.loading = false
           this.user = r
-          this.user.avatar = `${process.env.apiUrl}/${this.user.avatar}`
-          this.imagePreview = this.user.avatar
+          if (this.user.avatar) {
+            this.user.avatar = `${process.env.apiUrl}/${this.user.avatar}`
+            this.imagePreview = this.user.avatar
+          }
         })
         .catch((error) => {
           this.loading = false
