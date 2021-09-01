@@ -106,18 +106,21 @@ export default Vue.extend({
         this.find()
       }
     },
-    options: {
-      handler(newVal, oldVal) {
-        if (
-          newVal.filter !== oldVal.filter ||
-          newVal.page !== oldVal.page ||
-          newVal.itemsPerPage !== oldVal.itemsPerPage
-        ) {
-          this.find()
-        }
-      },
-      deep: true
-    }
+    'options.filter': function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.find()
+      }
+    },
+    'options.page': function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.find()
+      }
+    },
+    'options.itemsPerPage': function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.find()
+      }
+    },
   },
   computed: {
     isListMode() {
