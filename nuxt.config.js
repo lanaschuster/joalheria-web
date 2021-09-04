@@ -29,6 +29,7 @@ export default {
     '~plugins/v-mask.ts',
     '~plugins/accessor.ts',
     '~plugins/axios.ts',
+    '~plugins/v-money.ts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

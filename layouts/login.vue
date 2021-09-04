@@ -9,9 +9,9 @@
           >
             <v-img
               contain
-              height="300"
-              width="300"
-              src="/img/logo.png" 
+              height="800"
+              width="500"
+              src="/img/image857.png" 
               alt="Logo"
             ></v-img>
           </v-col>

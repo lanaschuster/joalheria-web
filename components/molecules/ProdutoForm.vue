@@ -103,16 +103,17 @@
 
       <v-col cols="12" sm="12" md="2">
         <v-text-field
+          ref="unitCost"
           outlined
           required
           :readonly="isViewMode"
           color="primary"
-          type="number"
-          min="0"
-          step="0.01"
+          type="text"
+          v-money="mask"
           label="Unit cost"
-          v-model="form.unitCost"
+          v-model="values.unitCost"
           placeholder="Unit cost"
+          @input="onChangeUnitCost()"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="2">
@@ -135,11 +136,10 @@
           required
           :readonly="isViewMode"
           color="primary"
-          type="number"
-          min="0"
-          step="0.01"
+          type="text"
+          v-money="mask"
           label="Shipping cost"
-          v-model="form.shipCost"
+          v-model="values.shipCost"
           placeholder="Shipping cost"
         ></v-text-field>
       </v-col>
@@ -149,11 +149,10 @@
           required
           :readonly="isViewMode"
           color="primary"
-          type="number"
-          min="0"
-          step="0.01"
+          type="text"
+          v-money="mask"
           label="Total cost"
-          v-model="form.totalCost"
+          v-model="values.totalCost"
           placeholder="Total cost"
         ></v-text-field>
       </v-col>
@@ -163,11 +162,10 @@
           required
           :readonly="isViewMode"
           color="primary"
-          type="number"
-          min="0"
-          step="0.01"
+          type="text"
+          v-money="mask"
           label="Sale price"
-          v-model="form.price"
+          v-model="values.price"
           placeholder="Sale price"
         ></v-text-field>
       </v-col>
@@ -212,8 +210,10 @@ import Vue from 'vue'
 import { Mode, Produto, Fornecedor, Categoria } from '@/models'
 import { $axios } from '@/utils/nuxt-instance'
 import { screen, snackbar } from '@/utils/store-access'
+import { MoneyFormat } from '@/mixins'
 
 export default Vue.extend({
+  mixins: [ MoneyFormat ],
   props: {
     id: {
       type: Number,
@@ -234,7 +234,7 @@ export default Vue.extend({
         description: '',
         code: '',
         quantity: 0,
-        unitCost: 0.0,
+        unitCost: 0,
         shipCost: 0,
         totalCost: 0,
         price: 0,
@@ -243,6 +243,13 @@ export default Vue.extend({
         category: {} as Categoria,
         image: '/img/image.svg',
       } as Produto,
+      values: {
+        unitCost: '$ 2,00',
+        shipCost: '',
+        totalCost: '',
+        price: '',
+        profit: '',
+      },
       suppliers: [],
       categories: [],
       loading: false,
@@ -250,6 +257,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    onChangeUnitCost() {
+      if (!this.$refs.unitCost.isFocused) return
+      this.form.unitCost = this.strToNumber(this.values.unitCost)
+    },
     toBase64(file: File) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -333,6 +344,11 @@ export default Vue.extend({
           this.form = r
           this.form.image = `${process.env.apiUrl}/${this.form.image}`
           this.imagePreview = this.form.image
+
+          // const unit = this.numberToStr(this.form.unitCost)
+          // this.values.unitCost = '$ ' + this.numberToStr(this.form.unitCost)
+          // this.values.unitCost = '$ ' + unit
+          // console.log(this.values.unitCost)
         })
         .catch((error) => {
           this.loading = false
@@ -362,6 +378,11 @@ export default Vue.extend({
           this.loading = false
         })
     },
+  },
+  watch: {
+    'values.unitCost': function (newVal, oldVal) {
+      console.log(newVal, oldVal)
+    }
   },
   created() {
     if (this.id) {

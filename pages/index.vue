@@ -1,5 +1,13 @@
 <template>
   <v-main class="main">
+    <v-img
+      contain
+      style="margin: 0 auto;"
+      height="300"
+      width="300"
+      src="/img/logo.png" 
+      alt="Logo"
+    ></v-img>
     <v-card>
       <v-card-title>Login</v-card-title>
       <v-card-text>
