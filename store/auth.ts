@@ -14,6 +14,7 @@ interface Token {
 export default class Auth extends VuexModule {
   private accessToken: undefined | string
   private refreshToken: undefined | string
+  private loading: boolean = false
 
   public get $accessToken() {
     return this.accessToken
@@ -23,12 +24,21 @@ export default class Auth extends VuexModule {
     return this.refreshToken
   }
 
+  public get $loading() {
+    return this.loading
+  }
+
   public get $header() {
     return {
       headers: {
         Authorization: `Bearer ${this.accessToken}`
       }
     }
+  }
+
+  @Mutation
+  private SET_LOADING(isLoading: boolean) {
+    this.loading = isLoading
   }
 
   @Mutation
@@ -66,16 +76,19 @@ export default class Auth extends VuexModule {
   @Action
   public async login(credentials: Credentials) {
     try {
+      this.context.commit('SET_LOADING', true)
       $axios.post('/auth/login', credentials)
         .then(result => {
-          
           this.context.commit('SET_REFRESH_TOKEN', result.data.refreshToken)
           this.context.commit('SET_ACCESS_TOKEN', result.data.accessToken)
+          this.context.commit('SET_LOADING', false)
+
           window.$nuxt.$router.push({
             path: '/dashboard/inicio'
           })
         })
         .catch(error => {
+          this.context.commit('SET_LOADING', false)
           if (error.response && error.response.data) {
             snackbar.setMessage(error.response.data.error)
           } else {
