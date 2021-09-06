@@ -6,7 +6,7 @@ export default Vue.extend({
       mask: {
         decimal: ',',
         thousands: '.',
-        prefix: '$ ',
+        prefix: '',
         precision: 2,
         masked: false
       }
@@ -15,7 +15,7 @@ export default Vue.extend({
   methods: {
     strToNumber(val: string): number {
       let unformated = val.replace(/\./g, '').replace(/,/g, '.')
-      unformated = unformated.replace(this.mask.prefix, '')
+      // unformated = unformated.replace(this.mask.prefix, '')
       return parseFloat(unformated)
     },
     numberToStr(val: number): string {

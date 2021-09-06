@@ -111,7 +111,7 @@
           type="text"
           v-money="mask"
           label="Unit cost"
-          v-model="values.unitCost"
+          v-model.lazy="values.unitCost"
           placeholder="Unit cost"
           @input="onChangeUnitCost()"
         ></v-text-field>
@@ -132,6 +132,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="2">
         <v-text-field
+          ref="shipCost"
           outlined
           required
           :readonly="isViewMode"
@@ -141,23 +142,26 @@
           label="Shipping cost"
           v-model="values.shipCost"
           placeholder="Shipping cost"
+          @input="onChangeShipCost()"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="2">
         <v-text-field
+          ref="totalCost"
           outlined
           required
-          :readonly="isViewMode"
+          readonly
           color="primary"
           type="text"
           v-money="mask"
           label="Total cost"
-          v-model="values.totalCost"
+          v-model="total"
           placeholder="Total cost"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="2">
         <v-text-field
+          ref="price"
           outlined
           required
           :readonly="isViewMode"
@@ -167,16 +171,17 @@
           label="Sale price"
           v-model="values.price"
           placeholder="Sale price"
+          @input="onChangePrice()"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="2">
         <v-text-field
+          ref="profit"
           outlined
           readonly
           color="primary"
-          type="number"
-          min="0"
-          step="0.01"
+          type="text"
+          v-money="mask"
           label="Profit"
           v-model="profit"
           placeholder="Profit"
@@ -199,7 +204,14 @@
     <v-row>
       <v-col cols="12" sm="12" md="12">
         <v-btn outlined color="primary" @click="voltar">Voltar</v-btn>
-        <v-btn type="submit" v-if="!isViewMode" color="primary">Salvar</v-btn>
+        <v-btn
+          type="submit"
+          v-if="!isViewMode"
+          color="primary"
+          :loading="loading"
+        >
+          Salvar
+        </v-btn>
       </v-col>
     </v-row>
   </form>
@@ -213,18 +225,10 @@ import { screen, snackbar } from '@/utils/store-access'
 import { MoneyFormat } from '@/mixins'
 
 export default Vue.extend({
-  mixins: [ MoneyFormat ],
+  mixins: [MoneyFormat],
   props: {
     id: {
       type: Number,
-    },
-  },
-  computed: {
-    isViewMode(): boolean {
-      return screen.$mode === Mode.VIEW
-    },
-    profit(): number {
-      return this.form.price - this.form.unitCost
     },
   },
   data() {
@@ -244,11 +248,9 @@ export default Vue.extend({
         image: '/img/image.svg',
       } as Produto,
       values: {
-        unitCost: '$ 2,00',
+        unitCost: '',
         shipCost: '',
-        totalCost: '',
         price: '',
-        profit: '',
       },
       suppliers: [],
       categories: [],
@@ -256,10 +258,38 @@ export default Vue.extend({
       imagePreview: '/img/image.svg',
     }
   },
+  computed: {
+    isViewMode(): boolean {
+      return screen.$mode === Mode.VIEW
+    },
+    profit(): number {
+      const calc = this.numberToStr(this.form.price - this.form.totalCost)
+      if (this.$refs.profit) {
+        this.$refs.profit.$el.getElementsByTagName('input')[0].value = calc
+        this.form.profit = this.strToNumber(calc)
+      }
+
+      return calc
+    },
+    total(): number {
+      const calc = this.numberToStr(this.form.unitCost + this.form.shipCost)
+      if (this.$refs.totalCost) {
+        this.$refs.totalCost.$el.getElementsByTagName('input')[0].value = calc
+        this.form.totalCost = this.strToNumber(calc)
+      }
+
+      return calc
+    },
+  },
   methods: {
     onChangeUnitCost() {
-      if (!this.$refs.unitCost.isFocused) return
       this.form.unitCost = this.strToNumber(this.values.unitCost)
+    },
+    onChangeShipCost() {
+      this.form.shipCost = this.strToNumber(this.values.shipCost)
+    },
+    onChangePrice() {
+      this.form.price = this.strToNumber(this.values.price)
     },
     toBase64(file: File) {
       return new Promise((resolve, reject) => {
@@ -298,8 +328,7 @@ export default Vue.extend({
       formData.append('shipCost', this.form.shipCost.toString())
       formData.append('totalCost', this.form.totalCost.toString())
       formData.append('price', this.form.price.toString())
-      if (this.profit)
-        formData.append('profit', this.profit.toString())
+      formData.append('profit', this.form.profit.toString())
       if (this.form.category.id)
         formData.append('categoryId', this.form.category.id)
       if (this.form.provider.id)
@@ -335,20 +364,36 @@ export default Vue.extend({
           this.loading = false
         })
     },
-    find() {
+    async find() {
       this.loading = true
-      $axios
+      await $axios
         .$get(`/api/products/${this.id}`)
         .then((r) => {
           this.loading = false
           this.form = r
+
+          const unitCost = this.numberToStr(r.unitCost)
+          this.$refs.unitCost.$el.getElementsByTagName('input')[0].value = unitCost
+          this.values.unitCost = unitCost
+
+          const shipCost = this.numberToStr(r.shipCost)
+          this.$refs.shipCost.$el.getElementsByTagName('input')[0].value = shipCost
+          this.values.shipCost = shipCost
+
+          const totalCost = this.numberToStr(r.totalCost)
+          this.$refs.totalCost.$el.getElementsByTagName('input')[0].value = totalCost
+          this.values.totalCost = totalCost
+
+          const price = this.numberToStr(r.price)
+          this.$refs.price.$el.getElementsByTagName('input')[0].value = price
+          this.values.price = price
+
+          const profit = this.numberToStr(r.profit)
+          this.$refs.profit.$el.getElementsByTagName('input')[0].value = profit
+          this.values.profit = profit
+
           this.form.image = `${process.env.apiUrl}/${this.form.image}`
           this.imagePreview = this.form.image
-
-          // const unit = this.numberToStr(this.form.unitCost)
-          // this.values.unitCost = '$ ' + this.numberToStr(this.form.unitCost)
-          // this.values.unitCost = '$ ' + unit
-          // console.log(this.values.unitCost)
         })
         .catch((error) => {
           this.loading = false
@@ -378,11 +423,6 @@ export default Vue.extend({
           this.loading = false
         })
     },
-  },
-  watch: {
-    'values.unitCost': function (newVal, oldVal) {
-      console.log(newVal, oldVal)
-    }
   },
   created() {
     if (this.id) {
