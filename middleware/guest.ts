@@ -3,7 +3,7 @@ import { auth } from '@/store'
 
 const guest: Middleware = ({ store, redirect }) => {
   if (auth.$accessToken) {
-    return redirect('/dashboard/inicio')
+    return redirect('/dashboard/home')
   }
 }
 

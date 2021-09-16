@@ -82,7 +82,7 @@ export default Vue.extend({
         .$get(`/api/users/myself`)
         .then((r) => {
           this.loading = false
-          this.user = r
+          this.user = r.user
           if (this.user.avatar) {
             this.user.avatar = `${process.env.apiUrl}/${this.user.avatar}`
             this.imagePreview = this.user.avatar

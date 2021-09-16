@@ -155,7 +155,7 @@
           type="text"
           v-money="mask"
           label="Total cost"
-          v-model="total"
+          :value="total"
           placeholder="Total cost"
         ></v-text-field>
       </v-col>
@@ -183,7 +183,7 @@
           type="text"
           v-money="mask"
           label="Profit"
-          v-model="profit"
+          :value="profit"
           placeholder="Profit"
         ></v-text-field>
       </v-col>
@@ -224,8 +224,7 @@ import { $axios } from '@/utils/nuxt-instance'
 import { screen, snackbar } from '@/utils/store-access'
 import { MoneyFormat } from '@/mixins'
 
-export default Vue.extend({
-  mixins: [MoneyFormat],
+export default MoneyFormat.extend({
   props: {
     id: {
       type: Number,
@@ -262,19 +261,19 @@ export default Vue.extend({
     isViewMode(): boolean {
       return screen.$mode === Mode.VIEW
     },
-    profit(): number {
+    profit(): string {
       const calc = this.numberToStr(this.form.price - this.form.totalCost)
       if (this.$refs.profit) {
-        this.$refs.profit.$el.getElementsByTagName('input')[0].value = calc
+        (this.$refs.profit as Vue).$el.getElementsByTagName('input')[0].value = calc
         this.form.profit = this.strToNumber(calc)
       }
 
       return calc
     },
-    total(): number {
+    total(): string {
       const calc = this.numberToStr(this.form.unitCost + this.form.shipCost)
       if (this.$refs.totalCost) {
-        this.$refs.totalCost.$el.getElementsByTagName('input')[0].value = calc
+        (this.$refs.totalCost as Vue).$el.getElementsByTagName('input')[0].value = calc
         this.form.totalCost = this.strToNumber(calc)
       }
 
@@ -328,7 +327,9 @@ export default Vue.extend({
       formData.append('shipCost', this.form.shipCost.toString())
       formData.append('totalCost', this.form.totalCost.toString())
       formData.append('price', this.form.price.toString())
-      formData.append('profit', this.form.profit.toString())
+
+      if (this.form.profit)
+        formData.append('profit', this.form.profit.toString())
       if (this.form.category.id)
         formData.append('categoryId', this.form.category.id)
       if (this.form.provider.id)
@@ -373,24 +374,29 @@ export default Vue.extend({
           this.form = r
 
           const unitCost = this.numberToStr(r.unitCost)
-          this.$refs.unitCost.$el.getElementsByTagName('input')[0].value = unitCost
+
+          if (this.$refs.unitCost)
+            (this.$refs.unitCost as Vue)
+              .$el.getElementsByTagName('input')[0].value = unitCost
           this.values.unitCost = unitCost
 
           const shipCost = this.numberToStr(r.shipCost)
-          this.$refs.shipCost.$el.getElementsByTagName('input')[0].value = shipCost
+          if (this.$refs.shipCost)
+            (this.$refs.shipCost as Vue).$el.getElementsByTagName('input')[0].value = shipCost
           this.values.shipCost = shipCost
 
           const totalCost = this.numberToStr(r.totalCost)
-          this.$refs.totalCost.$el.getElementsByTagName('input')[0].value = totalCost
-          this.values.totalCost = totalCost
+          if (this.$refs.totalCost)
+           ( this.$refs.totalCost as Vue).$el.getElementsByTagName('input')[0].value = totalCost
 
           const price = this.numberToStr(r.price)
-          this.$refs.price.$el.getElementsByTagName('input')[0].value = price
+          if (this.$refs.price)
+            (this.$refs.price as Vue).$el.getElementsByTagName('input')[0].value = price
           this.values.price = price
 
           const profit = this.numberToStr(r.profit)
-          this.$refs.profit.$el.getElementsByTagName('input')[0].value = profit
-          this.values.profit = profit
+          if (this.$refs.profit)
+            (this.$refs.profit as Vue).$el.getElementsByTagName('input')[0].value = profit
 
           this.form.image = `${process.env.apiUrl}/${this.form.image}`
           this.imagePreview = this.form.image

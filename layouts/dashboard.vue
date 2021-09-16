@@ -9,7 +9,7 @@
     >
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in menus"
           :key="i"
           nuxt
           :to="item.to"
@@ -73,6 +73,7 @@
 import Vue from 'vue'
 import { auth } from '@/store'
 import { Snackbar } from '@/components/molecules'
+import { Module, Action } from '@/models'
 
 export default Vue.extend({
   middleware: 'guard',
@@ -83,7 +84,13 @@ export default Vue.extend({
     return {
       drawer: true,
       fixed: false,
-      items: [
+      miniVariant: false,
+      title: 'D\'alma & Grace Jewellery'
+    }
+  },
+  computed: {
+    menus(): Array<any> {
+      let mainMenu: Array<any> = [
         {
           icon: 'mdi-home',
           title: 'Home',
@@ -92,39 +99,67 @@ export default Vue.extend({
         {
           icon: 'mdi-account-circle',
           title: 'My Account',
-          to: 'my-account'
-        },
-        {
+          to: 'profile'
+        }
+      ]
+
+      const permissions = auth.$permissions
+      const readSuppliers = this.canReadMenu(permissions, Module.PROVIDERS)
+      const readUsers = this.canReadMenu(permissions, Module.USERS)
+      const readProducts = this.canReadMenu(permissions, Module.PRODUCTS)
+      const readCategories = this.canReadMenu(permissions, Module.CATEGORIES)
+      const readPermissions = this.canReadMenu(permissions, Module.ROLES)
+    
+      if (readSuppliers) {
+        mainMenu.push({
           icon: 'mdi-store',
           title: 'Suppliers',
           to: 'suppliers'
-        },
-        {
-          icon: 'mdi-ring',
-          title: 'Products',
-          to: 'products'
-        },
-        {
-          icon: 'mdi-label-multiple',
-          title: 'Categories',
-          to: 'categories'
-        },
-        {
+        })
+      }
+
+      if (readUsers) {
+        mainMenu.push({
           icon: 'mdi-account',
           title: 'Users',
           to: 'users'
-        },
-        {
+        })
+      }
+
+      if (readProducts) {
+        mainMenu.push({
+          icon: 'mdi-ring',
+          title: 'Products',
+          to: 'products'
+        })
+      }
+
+      if (readCategories) {
+        mainMenu.push({
+          icon: 'mdi-label-multiple',
+          title: 'Categories',
+          to: 'categories'
+        })
+      }
+
+      if (readPermissions) {
+        mainMenu.push({
           icon: 'mdi-card-account-details-star',
           title: 'Permissions',
           to: 'permissions'
-        }
-      ],
-      miniVariant: false,
-      title: 'D\'alma & Grace Jewellery'
+        })
+      }
+
+      return mainMenu
     }
   },
   methods: {
+    canReadMenu(permissions: Array<any>, moduleName: Module) {
+      return permissions.find(p => {
+        return p.module === moduleName &&
+          (p.action === Action.ALL || p.action === Action.READ)
+      })
+    },
     logout() {
       auth.logout()
     }
