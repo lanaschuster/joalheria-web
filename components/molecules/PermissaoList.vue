@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" sm="12" md="12" class="d-flex justify-end">
-      <v-btn @click="add" color="success"> Novo perfil </v-btn>
+      <v-btn @click="add" color="success" v-if="canAddPermission"> Novo perfil </v-btn>
     </v-col>
     <v-col cols="12" md="12">
       <v-data-table
@@ -22,7 +22,7 @@
             <span>Visualizar</span>
           </v-tooltip>
 
-          <v-tooltip top>
+          <v-tooltip top v-if="canEditPermission">
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-on="on" v-bind="attrs" icon @click.stop="edit(item.id)">
                 <v-icon> mdi-pencil </v-icon>
@@ -43,9 +43,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { auth } from '@/store'
 import { $axios } from '@/utils/nuxt-instance'
-import { screen, snackbar } from '@/utils/store-access'
-import { Mode } from '@/models'
+import { screen } from '@/utils/store-access'
+import { Mode, Module, Action } from '@/models'
 
 export default Vue.extend({
   data() {
@@ -119,6 +120,20 @@ export default Vue.extend({
   computed: {
     isListMode() {
       return screen.$mode === Mode.LIST
+    },
+    canAddPermission() {
+      const permissions = auth.$permissions
+      return permissions.find(p => {
+        return p.module === Module.ROLES &&
+          (p.action === Action.ALL || p.action === Action.WRITE)
+      })
+    },
+    canEditPermission() {
+      const permissions = auth.$permissions
+      return permissions.find(p => {
+        return p.module === Module.ROLES &&
+          (p.action === Action.ALL || p.action === Action.UPDATE)
+      })
     }
   },
   watch: {
