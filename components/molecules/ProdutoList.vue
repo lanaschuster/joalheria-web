@@ -11,7 +11,7 @@
     <v-col 
       cols="12" sm="12" md="9" 
       class="d-flex align-center justify-end">
-      <v-btn @click="add" color="success">
+      <v-btn @click="add" color="success" v-if="canAdd">
         New Product
       </v-btn>
     </v-col>
@@ -35,7 +35,7 @@
             <span>Visualizar</span>
           </v-tooltip>
 
-          <v-tooltip top>
+          <v-tooltip top v-if="canEdit">
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-on="on" v-bind="attrs" icon @click.stop="editar(item.id)">
                 <v-icon> mdi-pencil </v-icon>
@@ -44,7 +44,7 @@
             <span>Editar</span>
           </v-tooltip>
 
-          <v-tooltip top>
+          <v-tooltip top v-if="canDelete">
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-on="on" v-bind="attrs" icon @click.stop="excluir(item.id)">
                 <v-icon> mdi-delete </v-icon>
@@ -71,9 +71,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { auth } from '@/store'
 import { $axios } from '@/utils/nuxt-instance'
-import { screen, snackbar } from '@/utils/store-access'
-import { Mode } from '@/models'
+import { screen } from '@/utils/store-access'
+import { Mode, Module, Action } from '@/models'
 
 
 export default Vue.extend({
@@ -177,6 +178,27 @@ export default Vue.extend({
   computed: {
     isListMode() {
       return screen.$mode === Mode.LIST
+    },
+    canAdd() {
+      const permissions = auth.$permissions
+      return permissions.find(p => {
+        return p.module === Module.PRODUCTS &&
+          (p.action === Action.ALL || p.action === Action.WRITE)
+      })
+    },
+    canEdit() {
+      const permissions = auth.$permissions
+      return permissions.find(p => {
+        return p.module === Module.PRODUCTS &&
+          (p.action === Action.ALL || p.action === Action.UPDATE)
+      })
+    },
+    canDelete() {
+      const permissions = auth.$permissions
+      return permissions.find(p => {
+        return p.module === Module.PRODUCTS &&
+          (p.action === Action.ALL || p.action === Action.DELETE)
+      })
     }
   },
   methods: {
