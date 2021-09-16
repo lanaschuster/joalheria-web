@@ -113,7 +113,8 @@
                         v-on="on"
                         v-bind="attrs"
                         icon
-                        @click.stop="deleteItem(i)"
+                        :disabled="isViewMode"
+                        @click.stop="deleteItem(i, item.id)"
                       >
                         <v-icon> mdi-delete </v-icon>
                       </v-btn>
@@ -128,7 +129,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="12">
         <v-btn @click="voltar" color="primary" outlined>Voltar</v-btn>
-        <v-btn color="success" type="submit" :loading="loading">Salvar</v-btn>
+        <v-btn color="success" type="submit" :loading="loading" v-if="!isViewMode">Salvar</v-btn>
       </v-col>
     </v-row>
   </form>
@@ -136,14 +137,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Mode, Action, Module, Role } from '@/models'
+import { Mode, Action, Module, Role, Permissao } from '@/models'
 import { screen, snackbar } from '@/utils/store-access'
 import { $axios } from '@/utils/nuxt-instance'
-
-interface Permissao {
-  action: string
-  module: string
-}
 
 export default Vue.extend({
   props: {
@@ -176,8 +172,23 @@ export default Vue.extend({
         this.edit()
       }
     },
-    deleteItem(index: number) {
-      this.form.permissoes.splice(index, 1)
+    deleteItem(index: number, id?: number) {
+      if (id) {
+        this.loading = true
+        $axios
+          .$delete(`/api/roles/${id}/grant`)
+          .then(r => {
+            this.loading = false
+            this.find()
+            snackbar.setMessage('Permissão removida')
+            snackbar.setSnackbar(true)
+          })
+          .catch((error) => {
+            this.loading = false
+          })
+      } else {
+        this.form.permissoes.splice(index, 1)
+      }
     },
     addItem() {
       const exists = this.form.permissoes.find((item) => {
@@ -192,16 +203,18 @@ export default Vue.extend({
         return
       }
 
-      if (this.form.action === Action.ALL) {
-        this.form.permissoes = this.form.permissoes.filter((item) => {
-          return item.module !== this.form.module
+      // if (this.form.action === Action.ALL) {
+      //   this.form.permissoes = this.form.permissoes.filter((item) => {
+      //     return item.module !== this.form.module
+      //   })
+      // }
+
+      if (this.form.action && this.form.module) {
+        this.form.permissoes.push({
+          action: this.form.action as Action,
+          module: this.form.module as Module,
         })
       }
-
-      this.form.permissoes.push({
-        action: this.form.action,
-        module: this.form.module,
-      })
     },
     add() {
       this.loading = true
@@ -223,7 +236,26 @@ export default Vue.extend({
           this.loading = false
         })
     },
-    edit() {},
+    edit() {
+      this.loading = true
+
+      let body = { 
+        ...this.form.role,
+        permissions: this.form.permissoes
+      }
+
+      $axios
+        .$put(`/api/roles/${this.form.role.id}`, body)
+        .then(r => {
+          this.loading = false
+          this.voltar()
+          snackbar.setMessage('Perfil editado com sucesso')
+          snackbar.setSnackbar(true)
+        })
+        .catch((error) => {
+          this.loading = false
+        })
+    },
     find() {
       this.loading = true
 
@@ -247,6 +279,9 @@ export default Vue.extend({
     isViewMode() {
       return screen.$mode === Mode.VIEW
     },
+    isEditMode() {
+      return screen.$mode === Mode.EDIT
+    },
     actions() {
       return Object.values(Action)
     },
@@ -255,7 +290,7 @@ export default Vue.extend({
     },
   },
   created() {
-    if (this.isViewMode) {
+    if (this.isViewMode || this.isEditMode) {
       this.find()
     }
   }
