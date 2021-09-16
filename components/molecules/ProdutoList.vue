@@ -64,6 +64,9 @@
             ></v-img>
           </v-avatar>
         </template>
+        <template v-slot:[`item.profit`]="{ item }">
+          {{ item.profit ? parseFloat(item.profit).toFixed(2) : '-' }}
+        </template>
       </v-data-table>
     </v-col>
   </v-row>
