@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <Fornecedores v-if="canAccessSuppliers" />
+    <Forbidden v-else />
   </v-container>
 </template>
 
@@ -8,12 +9,13 @@
 import Vue from 'vue'
 import { auth } from '@/store'
 import { Module, Action } from '@/models'
-import { Fornecedores } from '@/components/organisms'
+import { Fornecedores, Forbidden } from '@/components/organisms'
 
 export default Vue.extend({
   layout: 'dashboard',
   components: {
-    Fornecedores
+    Fornecedores,
+    Forbidden
   },
   computed: {
     slug() {

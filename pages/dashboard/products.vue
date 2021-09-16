@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <Produtos v-if="canAccessProducts" />
+    <Forbidden v-else />
   </v-container>
 </template>
 
@@ -8,12 +9,13 @@
 import Vue from 'vue'
 import { auth } from '@/store'
 import { Module, Action } from '@/models'
-import { Produtos } from '@/components/organisms'
+import { Produtos, Forbidden } from '@/components/organisms'
 
 export default Vue.extend({
   layout: 'dashboard',
   components: {
-    Produtos
+    Produtos,
+    Forbidden
   },
   computed: {
     canAccessProducts() {

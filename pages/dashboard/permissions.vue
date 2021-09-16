@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <Permissoes v-if="canAccessPermissoes" />
+    <Forbidden v-else />
   </v-container>
 </template>
 
@@ -8,12 +9,13 @@
 import Vue from 'vue'
 import { auth } from '@/store'
 import { Module, Action } from '@/models'
-import { Permissoes } from '@/components/organisms'
+import { Permissoes, Forbidden } from '@/components/organisms'
 
 export default Vue.extend({
   layout: 'dashboard',
   components: {
-    Permissoes
+    Permissoes,
+    Forbidden
   },
   computed: {
     canAccessPermissoes() {

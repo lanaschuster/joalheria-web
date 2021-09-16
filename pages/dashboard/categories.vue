@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <Categorias v-if="canAccessCategory"  />
-    <h1 v-else>forbidden</h1>
+    <Forbidden v-else />
   </v-container>
 </template>
 
@@ -9,12 +9,13 @@
 import Vue from 'vue'
 import { auth } from '@/store'
 import { Module, Action } from '@/models'
-import { Categorias } from '@/components/organisms'
+import { Categorias, Forbidden } from '@/components/organisms'
 
 export default Vue.extend({
   layout: 'dashboard',
   components: {
-    Categorias
+    Categorias,
+    Forbidden
   },
   computed: {
     canAccessCategory() {

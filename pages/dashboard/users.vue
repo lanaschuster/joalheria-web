@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <Usuarios v-if="canAccessUsers" />
+    <Forbidden v-else />
   </v-container>
 </template>
 
@@ -10,13 +11,15 @@ import { auth } from '@/store'
 import { Module, Action } from '@/models'
 
 import {
-  Usuarios
+  Usuarios,
+  Forbidden
 } from '@/components/organisms'
 
 export default Vue.extend({
   layout: 'dashboard',
   components: {
-    Usuarios
+    Usuarios,
+    Forbidden
   },
   computed: {
     canAccessUsers() {
