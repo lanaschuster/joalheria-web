@@ -183,8 +183,8 @@ export default Vue.extend({
 
       return mainMenu
     },
-    isMobile() {
-      switch (this.$vuetify.breakpoint.name) {
+    isMobile(): boolean {
+      switch ((this as any).$vuetify.breakpoint.name) {
         case 'xs':
           return true
         case 'sm':
