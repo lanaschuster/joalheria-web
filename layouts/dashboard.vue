@@ -22,7 +22,26 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:prepend>
+        <v-list-item :class="{'pl-0': miniVariant, 'pr-0': miniVariant}">
+          <v-list-item-content>
+            <v-avatar :height="miniVariant ? '40' : '200'">
+              <v-img
+                :height="miniVariant ? '40' : '200'"
+                :width="miniVariant ? '40' : '200'"
+                lazy-src="/img/logo.jpg"
+                style="position: absolute"
+                :src="imagePreview"
+                alt="Avatar"
+              ></v-img>
+            </v-avatar>
+            <p class="text-center mt-4" v-if="!miniVariant">{{ user.name }}</p>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+      </template>
       <template v-slot:append>
+        <v-divider></v-divider>
         <v-list-item @click="logout">
           <v-list-item-icon>
             <v-icon>mdi-logout</v-icon>
@@ -44,6 +63,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
         icon
+        v-if="!isMobile"
         @click.stop="miniVariant = !miniVariant"
       >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
@@ -74,6 +94,7 @@ import Vue from 'vue'
 import { auth } from '@/store'
 import { Snackbar } from '@/components/molecules'
 import { Module, Action } from '@/models'
+import { $axios } from '@/utils/nuxt-instance'
 
 export default Vue.extend({
   middleware: 'guard',
@@ -85,7 +106,17 @@ export default Vue.extend({
       drawer: true,
       fixed: false,
       miniVariant: false,
-      title: 'D\'alma & Grace Jewellery'
+      title: 'D\'alma & Grace Jewellery',
+      user: {
+        role: {
+          name: '',
+        },
+        name: '',
+        lastName: '',
+        email: '',
+        avatar: '/img/image.svg'
+      },
+      imagePreview: '/img/logo.jpg',
     }
   },
   computed: {
@@ -151,6 +182,16 @@ export default Vue.extend({
       }
 
       return mainMenu
+    },
+    isMobile() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          return true
+        case 'sm':
+          return true
+        default:
+          return false
+      }
     }
   },
   methods: {
@@ -162,7 +203,21 @@ export default Vue.extend({
     },
     logout() {
       auth.logout()
-    }
+    },
+    find() {
+      $axios
+        .$get(`/api/users/myself`)
+        .then((r) => {
+          this.user = r.user
+          if (this.user.avatar) {
+            this.user.avatar = `${process.env.apiUrl}/${this.user.avatar}`
+            this.imagePreview = this.user.avatar
+          }
+        })
+    },
+  },
+  created() {
+    this.find()
   }
 })
 </script>
