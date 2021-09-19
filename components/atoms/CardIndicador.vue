@@ -1,5 +1,5 @@
 <template>
-  <v-card color="secondary" elevation="4">
+  <v-card elevation="4">
     <v-card-title class="title overline"> {{ title }} </v-card-title>
     <v-card-text class="d-flex justify-space-between pr-6">
       <v-icon x-large>{{ icon }}</v-icon>
