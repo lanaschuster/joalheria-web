@@ -15,8 +15,11 @@
     <v-col cols="12" sm="12" md="3">
       <IndicadorCategories />
     </v-col>
-    <v-col cols="12" sm="12" md="3">
+    <v-col cols="12" sm="12" md="6" lg="3">
       <ProductsByCategory />
+    </v-col>
+    <v-col cols="12" sm="12" md="6" lg="3">
+      <ProductsByProvider />
     </v-col>
   </v-row>
 </template>
@@ -31,12 +34,14 @@ import {
   IndicadorSuppliers,
   IndicadorProducts,
   IndicadorCategories,
+  ProductsByProvider
 } from '@/components/atoms'
 
 export default Vue.extend({
   components: {
     CardIndicador,
     ProductsByCategory,
+    ProductsByProvider,
     IndicadorUsers,
     IndicadorSuppliers,
     IndicadorProducts,
