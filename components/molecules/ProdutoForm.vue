@@ -26,7 +26,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" sm="12" md="4">
+      <v-col cols="12" sm="12" md="6">
         <v-text-field
           outlined
           required
@@ -40,7 +40,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" sm="12" md="2">
+      <v-col cols="12" sm="12" md="3">
         <v-text-field
           outlined
           required
@@ -52,7 +52,7 @@
           placeholder="Code"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="12" md="2">
+      <v-col cols="12" sm="12" md="3">
         <v-text-field
           outlined
           required
@@ -64,7 +64,7 @@
           placeholder="SKU"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="12" md="4">
+      <v-col cols="12" sm="12" md="3">
         <v-select
           outlined
           required
@@ -82,7 +82,7 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" sm="12" md="4">
+      <v-col cols="12" sm="12" md="3">
         <v-select
           outlined
           required
@@ -101,7 +101,7 @@
         </v-select>
       </v-col>
 
-      <v-col cols="12" sm="12" md="2">
+      <v-col cols="12" sm="12" md="3">
         <v-text-field
           ref="unitCost"
           outlined
@@ -116,7 +116,7 @@
           @input="onChangeUnitCost()"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="12" md="2">
+      <v-col cols="12" sm="12" md="3">
         <v-text-field
           outlined
           required
@@ -130,36 +130,7 @@
           placeholder="Quantity"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="12" md="2">
-        <v-text-field
-          ref="shipCost"
-          outlined
-          required
-          :readonly="isViewMode"
-          color="primary"
-          type="text"
-          v-money="mask"
-          label="Shipping cost"
-          v-model="values.shipCost"
-          placeholder="Shipping cost"
-          @input="onChangeShipCost()"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="12" md="2">
-        <v-text-field
-          ref="totalCost"
-          outlined
-          required
-          readonly
-          color="primary"
-          type="text"
-          v-money="mask"
-          label="Total cost"
-          :value="total"
-          placeholder="Total cost"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="12" md="2">
+      <v-col cols="12" sm="12" md="3">
         <v-text-field
           ref="price"
           outlined
@@ -174,7 +145,7 @@
           @input="onChangePrice()"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="12" md="2">
+      <v-col cols="12" sm="12" md="3">
         <v-text-field
           ref="profit"
           outlined
@@ -238,7 +209,6 @@ export default MoneyFormat.extend({
         code: '',
         quantity: 0,
         unitCost: 0,
-        shipCost: 0,
         totalCost: 0,
         price: 0,
         profit: 0,
@@ -262,7 +232,7 @@ export default MoneyFormat.extend({
       return screen.$mode === Mode.VIEW
     },
     profit(): string {
-      const calc = this.numberToStr(this.form.price - this.form.totalCost)
+      const calc = this.numberToStr(this.form.price - this.form.unitCost)
       if (this.$refs.profit) {
         (this.$refs.profit as Vue).$el.getElementsByTagName('input')[0].value = calc
         this.form.profit = this.strToNumber(calc)
@@ -271,7 +241,7 @@ export default MoneyFormat.extend({
       return calc
     },
     total(): string {
-      const calc = this.numberToStr(this.form.unitCost + this.form.shipCost)
+      const calc = this.numberToStr(this.form.unitCost)
       if (this.$refs.totalCost) {
         (this.$refs.totalCost as Vue).$el.getElementsByTagName('input')[0].value = calc
         this.form.totalCost = this.strToNumber(calc)
@@ -283,9 +253,6 @@ export default MoneyFormat.extend({
   methods: {
     onChangeUnitCost() {
       this.form.unitCost = this.strToNumber(this.values.unitCost)
-    },
-    onChangeShipCost() {
-      this.form.shipCost = this.strToNumber(this.values.shipCost)
     },
     onChangePrice() {
       this.form.price = this.strToNumber(this.values.price)
@@ -324,7 +291,6 @@ export default MoneyFormat.extend({
       formData.append('image', this.form.image)
       formData.append('quantity', this.form.quantity.toString())
       formData.append('unitCost', this.form.unitCost.toString())
-      formData.append('shipCost', this.form.shipCost.toString())
       formData.append('totalCost', this.form.totalCost.toString())
       formData.append('price', this.form.price.toString())
 

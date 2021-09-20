@@ -11,7 +11,6 @@ interface Produto {
   
   quantity: number,
   unitCost: number,
-  shipCost: number,
   totalCost: number,
   price: number,
   profit?: number,
