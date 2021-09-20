@@ -64,6 +64,11 @@
             ></v-img>
           </v-avatar>
         </template>
+        <template v-slot:[`item.category.name`]="{ item }">
+          <v-chip>
+            {{ item.category.name }}
+          </v-chip>
+        </template>
         <template v-slot:[`item.profit`]="{ item }">
           {{ item.profit ? parseFloat(item.profit).toFixed(2) : '-' }}
         </template>
@@ -126,7 +131,7 @@ export default Vue.extend({
         {
           text: 'Category',
           sortable: true,
-          align: 'start',
+          align: 'center',
           value: 'category.name',
         },
         {

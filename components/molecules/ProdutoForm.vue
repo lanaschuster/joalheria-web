@@ -346,15 +346,6 @@ export default MoneyFormat.extend({
               .$el.getElementsByTagName('input')[0].value = unitCost
           this.values.unitCost = unitCost
 
-          const shipCost = this.numberToStr(r.shipCost)
-          if (this.$refs.shipCost)
-            (this.$refs.shipCost as Vue).$el.getElementsByTagName('input')[0].value = shipCost
-          this.values.shipCost = shipCost
-
-          const totalCost = this.numberToStr(r.totalCost)
-          if (this.$refs.totalCost)
-           ( this.$refs.totalCost as Vue).$el.getElementsByTagName('input')[0].value = totalCost
-
           const price = this.numberToStr(r.price)
           if (this.$refs.price)
             (this.$refs.price as Vue).$el.getElementsByTagName('input')[0].value = price
