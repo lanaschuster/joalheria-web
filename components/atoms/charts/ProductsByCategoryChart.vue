@@ -2,9 +2,9 @@
   <client-only>
     <v-card elevation="4">
       <v-card-title class="title overline"> Products by Category </v-card-title>
-      <v-card-content style="padding: 4px">
+      <v-card-text>
         <PieChart v-if="show" :data="pieData" :options="pieOpt" />
-      </v-card-content>
+      </v-card-text>
     </v-card>
   </client-only>
 </template>
