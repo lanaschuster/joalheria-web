@@ -4,7 +4,7 @@
     <h4 class="subtitle text-subtitle-1 mb-8">{{ subtitle }}</h4>
     <v-row>
       <v-col cols="12" sm="12" md="12">
-        <UsuarioList
+        <SaleList
           v-if="isListMode" 
           @id="id = $event" 
         />
@@ -21,12 +21,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Mode } from '@/models'
-import { UsuarioList, UsuarioForm } from '@/components/molecules'
+import { SaleList, UsuarioForm } from '@/components/molecules'
 import { screen } from '@/store'
 
 export default Vue.extend({
   components: {
-    UsuarioList,
+    SaleList,
     UsuarioForm,
   },
   data() {
