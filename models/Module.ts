@@ -3,7 +3,8 @@ enum Module {
   ROLES = 'ROLES',
   PROVIDERS = 'PROVIDERS',
   PRODUCTS = 'PRODUCTS',
-  CATEGORIES = 'CATEGORIES'
+  CATEGORIES = 'CATEGORIES',
+  SALES = 'SALES'
 }
 
 export default Module

@@ -140,6 +140,7 @@ export default Vue.extend({
       const readProducts = this.canReadMenu(permissions, Module.PRODUCTS)
       const readCategories = this.canReadMenu(permissions, Module.CATEGORIES)
       const readPermissions = this.canReadMenu(permissions, Module.ROLES)
+      const readSales = this.canReadMenu(permissions, Module.SALES)
     
       if (readSuppliers) {
         mainMenu.push({
@@ -178,6 +179,14 @@ export default Vue.extend({
           icon: 'mdi-card-account-details-star',
           title: 'Permissions',
           to: 'permissions'
+        })
+      }
+
+      if (readSales) {
+        mainMenu.push({
+          icon: 'mdi-cash-register',
+          title: 'Sales',
+          to: 'sales'
         })
       }
 
