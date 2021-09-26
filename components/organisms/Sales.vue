@@ -8,7 +8,7 @@
           v-if="isListMode" 
           @id="id = $event" 
         />
-        <UsuarioForm 
+        <SaleForm 
           @id="id = $event" 
           v-else 
           :id="+id"
@@ -21,13 +21,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Mode } from '@/models'
-import { SaleList, UsuarioForm } from '@/components/molecules'
+import { SaleList, SaleForm } from '@/components/molecules'
 import { screen } from '@/store'
 
 export default Vue.extend({
   components: {
     SaleList,
-    UsuarioForm,
+    SaleForm,
   },
   data() {
     return {
@@ -47,7 +47,7 @@ export default Vue.extend({
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
         return 'Venda ID: ' + this.id
-      } else {
+      } else if (screen.$mode === Mode.LIST) {
         return 'Listagem das vendas realizadas'
       }
 
