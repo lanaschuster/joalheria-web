@@ -51,7 +51,7 @@ export default Vue.extend({
         return '90px'
       }
 
-      return '126px'
+      return '200px'
     }
   }
 })
