@@ -46,9 +46,11 @@ export default Vue.extend({
   },
   computed: {
     margin() {
-      const width = window.innerWidth
-      if (width <= 1400) {
-        return '90px'
+      if (process.browser) {
+        const width = window.innerWidth
+        if (width <= 1400) {
+          return '90px'
+        }
       }
 
       return '200px'
