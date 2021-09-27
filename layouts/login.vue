@@ -11,13 +11,11 @@
           >
             <div class="d-flex flex-column justify-center align-center">
               <v-img
-                contain
-                height="800"
-                width="500"
+                style="margin-top: 90px;"
                 src="/img/image857.png"
                 alt="Logo"
               ></v-img>
-              <span class="white--text description">
+              <span class="white--text description mt-10">
                 Jewellery Management made simple <strong>.</strong>
               </span>
             </div>

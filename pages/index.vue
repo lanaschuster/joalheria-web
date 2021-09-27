@@ -5,14 +5,14 @@
         <v-img
           contain
           style="margin: 0 auto;"
-          height="300"
-          width="300"
+          :height="height"
+          :width="width"
           src="/img/logo.png" 
           alt="Logo"
         ></v-img>
       </v-col>
-      <v-col cols="12" sm="12">
-        <v-card>
+      <v-col cols="12" sm="12" md="12">
+        <v-card style="margin-top: -60px">
           <v-card-title>Login</v-card-title>
           <v-card-text>
             <form @submit.prevent="login">
@@ -56,7 +56,21 @@ export default Vue.extend({
   computed: {
     loading() {
       return auth.$loading
-    }
+    },
+    height() {
+      if ((this as any).$vuetify.breakpoint.name == 'md') {
+        return '80'
+      }
+
+      return '300'
+    },
+    width() {
+      if ((this as any).$vuetify.breakpoint.name == 'md') {
+        return '80'
+      }
+
+      return '300'
+    },
   },
   methods: {
     async login() {
