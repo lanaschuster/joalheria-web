@@ -11,7 +11,7 @@
           >
             <div class="d-flex flex-column justify-center align-center">
               <v-img
-                style="margin-top: 90px;"
+                :style="{ 'margin-top': margin }"
                 src="/img/image857.png"
                 alt="Logo"
               ></v-img>
@@ -44,6 +44,16 @@ export default Vue.extend({
   components: {
     Snackbar,
   },
+  computed: {
+    margin() {
+      const width = window.innerWidth
+      if (width <= 1400) {
+        return '90px'
+      }
+
+      return '126px'
+    }
+  }
 })
 </script>
 

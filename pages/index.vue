@@ -59,14 +59,14 @@ export default Vue.extend({
     },
     height() {
       if ((this as any).$vuetify.breakpoint.name == 'md') {
-        return '80'
+        return '200'
       }
 
       return '300'
     },
     width() {
       if ((this as any).$vuetify.breakpoint.name == 'md') {
-        return '80'
+        return '200'
       }
 
       return '300'
