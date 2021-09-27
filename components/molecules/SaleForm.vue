@@ -46,18 +46,17 @@
       </v-col>
       <v-col cols="12" sm="12" md="4">
         <v-autocomplete
+          outlined
           v-model="product"
           :items="products"
-          :loading="isLoading"
-          :search-input.sync="search"
-          color="white"
+          :loading="productLoading"
+          :search-input.sync="productSearch"
           hide-no-data
           hide-selected
           item-text="Description"
           item-value="API"
-          label="Public APIs"
+          label="Product"
           placeholder="Start typing to Search"
-          prepend-icon="mdi-database-search"
           return-object
         ></v-autocomplete>
       </v-col>
@@ -84,7 +83,7 @@ import Vue from 'vue'
 import { $axios } from '@/utils/nuxt-instance'
 import { screen, snackbar } from '@/utils/store-access'
 import { MoneyFormat } from '@/mixins'
-import { Mode, Sale, SaleStatus, DiscountType } from '@/models'
+import { Mode, Sale, SaleStatus, DiscountType, Produto } from '@/models'
 
 export default Vue.extend({
   props: {
@@ -96,16 +95,43 @@ export default Vue.extend({
     return {
       loading: false,
       productLoading: false,
+      productSearch: '',
       form: {} as Sale,
       category: {},
       categories: [],
-      product: {},
-      products: [],
+      product: {} as Produto,
+      products: [] as Produto[],
     }
   },
   computed: {
     isViewMode(): boolean {
       return screen.$mode === Mode.VIEW
+    },
+    items(): Array<Produto> {
+      return this.products.map(entry => {
+        return Object.assign({}, entry, { name: entry.name })
+      })
+    }
+  },
+  watch: {
+    search (val) {
+      if (this.products.length > 0) return
+      if (this.productLoading) return
+
+      this.productLoading = true
+
+      // Lazily load input items
+      // fetch('https://api.publicapis.org/entries')
+      //   .then(res => res.json())
+      //   .then(res => {
+      //     const { count, entries } = res
+      //     this.count = count
+      //     this.entries = entries
+      //   })
+      //   .catch(err => {
+      //     console.log(err)
+      //   })
+      //   .finally(() => (this.isLoading = false))
     },
   },
   methods: {
