@@ -103,7 +103,7 @@ export default class Auth extends VuexModule {
         .catch(error => {
           this.context.commit('SET_LOADING', false)
           if (error.response && error.response.data) {
-            snackbar.setMessage(error.response.data.error)
+            snackbar.setMessage(error.response.data.message)
           } else {
             snackbar.setMessage('Não foi possível efetuar o login, tente mais tarde.')
           }

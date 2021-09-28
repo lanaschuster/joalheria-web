@@ -13,8 +13,13 @@ const axiosPlugin: Plugin = ({ app, store, redirect }) => {
 
   app.$axios.onError((error) => {
     if (error.response?.status === 401) {
+      snackbar.setMessage(error.response.data.message)
+      snackbar.setSnackbar(true)
+
+    } else if (error.response?.status === 403) {
       const refresh = app.$cookies.get('refresh')
       store.dispatch('auth/refresh', refresh)
+
     } else if (error.response?.status === 400) {
       snackbar.setMessage(error.response.data.message)
       snackbar.setSnackbar(true)

@@ -17,12 +17,14 @@
           <v-card-text>
             <form @submit.prevent="login">
               <v-text-field
+                required
                 outlined
                 type="email"
                 label="E-mail"
                 v-model="credentials.email"
               ></v-text-field>
               <v-text-field
+                required
                 outlined
                 type="password"
                 label="Password"
@@ -30,7 +32,7 @@
               ></v-text-field>
               <div class="d-flex flex-column">
                 <v-btn type="submit" color="primary" block class="btn" :loading="loading">Login</v-btn>
-                <v-btn outlined @click="login" color="primary" block class="btn">Forgot password?</v-btn>
+                <v-btn outlined @click="forgotPassword" color="primary" block class="btn">Forgot password?</v-btn>
               </div>
             </form>
           </v-card-text>
@@ -75,6 +77,9 @@ export default Vue.extend({
   methods: {
     async login() {
       await auth.login(this.credentials)
+    },
+    forgotPassword() {
+      alert('em construção, sorry')
     }
   }
 })
