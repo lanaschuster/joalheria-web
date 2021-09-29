@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="onSubmit">
     <v-row>
-      <v-col cols="12" sm="12" md="6">
+      <v-col cols="12" sm="12" md="8">
         <v-card style="height: 100%" elevation="4">
           <v-card-title class="title overline">
             Sale data
@@ -83,22 +83,43 @@
                   :value="sku"
                 ></v-text-field>
               </v-col>
+              <v-col cols="12" sm="12" md="12">
+                <v-text-field
+                  outlined
+                  readonly
+                  color="primary"
+                  type="text"
+                  label="Price"
+                  :value="price"
+                ></v-text-field>
+              </v-col>
             </v-row>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="6">
-        <v-card elevation="4">
+      <v-col cols="12" sm="12" md="4">
+        <v-card elevation="4" style="height: 100%">
           <v-card-title class="title overline">
             Current Product
           </v-card-title>
           <v-card-text>
             <v-img
-              style="margin: 0 auto"
+              style="margin: 0 auto; margin-top: 30px; border-radius: 10px;"
               :src="image"
               height="420"
               width="420"
             ></v-img>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" sm="12">
+        <v-card style="height: 100%" elevation="4">
+          <v-card-title class="title overline">
+            Products
+          </v-card-title>
+          <v-card-text>
           </v-card-text>
         </v-card>
       </v-col>
@@ -164,6 +185,10 @@ export default Vue.extend({
     sku(): string | undefined {
       if (this.product) return this.product.sku
       return ''
+    },
+    price(): number {
+      if (this.product) return this.product.price
+      return 0
     },
     image(): string {
       if (this.product && this.product.image) {
