@@ -3,9 +3,7 @@
     <v-row>
       <v-col cols="12" sm="12" md="8">
         <v-card style="height: 100%" elevation="4">
-          <v-card-title class="title overline">
-            Sale data
-          </v-card-title>
+          <v-card-title class="title overline"> Sale data </v-card-title>
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="12" md="6">
@@ -31,7 +29,7 @@
                   placeholder="Customer e-mail"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="12">
+              <v-col cols="12" sm="11">
                 <v-autocomplete
                   outlined
                   clearable
@@ -52,6 +50,11 @@
                     {{ item.code }} - {{ item.name }}
                   </template>
                 </v-autocomplete>
+              </v-col>
+              <v-col cols="12" sm="1">
+                <v-btn color="success" fab @click="addItem">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
               </v-col>
               <v-col cols="12" sm="12">
                 <v-text-field
@@ -99,12 +102,10 @@
       </v-col>
       <v-col cols="12" sm="12" md="4">
         <v-card elevation="4" style="height: 100%">
-          <v-card-title class="title overline">
-            Current Product
-          </v-card-title>
+          <v-card-title class="title overline"> Current Product </v-card-title>
           <v-card-text>
             <v-img
-              style="margin: 0 auto; margin-top: 30px; border-radius: 10px;"
+              style="margin: 0 auto; margin-top: 30px; border-radius: 10px"
               :src="image"
               height="420"
               width="420"
@@ -116,10 +117,62 @@
     <v-row>
       <v-col cols="12" sm="12">
         <v-card style="height: 100%" elevation="4">
-          <v-card-title class="title overline">
-            Products
-          </v-card-title>
+          <v-card-title class="title overline"> Products </v-card-title>
           <v-card-text>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">Code</th>
+                    <th class="text-left">Product</th>
+                    <th class="text-left">Qty</th>
+                    <th class="text-left">Price</th>
+                    <th class="text-left">Discount</th>
+                    <th class="text-left">Total</th>
+                    <th class="text-left">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-if="saleProducts.length === 0">
+                    <p
+                      class="subtitle d-flex justify-start pl-10 pt-4"
+                      style="width: 100%"
+                    >
+                      Nenhum produto adicionado
+                    </p>
+                  </tr>
+                  <tr
+                    v-else
+                    v-for="(item, i) in saleProducts"
+                    :key="`sale_prod_${i}`"
+                  >
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>0</td>
+                    <td>{{ item.price }}</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            color="error"
+                            v-on="on"
+                            v-bind="attrs"
+                            icon
+                            :disabled="isViewMode"
+                            @click.stop="deleteItem(i)"
+                          >
+                            <v-icon> mdi-delete </v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Remover</span>
+                      </v-tooltip>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -143,7 +196,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { $axios } from '@/utils/nuxt-instance'
-import { screen } from '@/utils/store-access'
+import { screen, snackbar } from '@/utils/store-access'
 import { MoneyFormat } from '@/mixins'
 import {
   Mode,
@@ -172,6 +225,7 @@ export default Vue.extend({
         sku: '',
       } as Produto,
       products: [] as Produto[],
+      saleProducts: [] as Produto[]
     }
   },
   computed: {
@@ -256,6 +310,20 @@ export default Vue.extend({
           this.loading = false
         })
     },
+    addItem() {
+      const exists = this.saleProducts.find(p => p.id === this.product.id)
+
+      if (exists) {
+        snackbar.setMessage('Product already added')
+        snackbar.setSnackbar(true)
+        return
+      }
+
+      this.saleProducts.push({ ...this.product })
+    },
+    deleteItem(index: number) {
+      this.saleProducts.splice(index, 1)
+    }
   },
   created() {
     if (this.id) {
