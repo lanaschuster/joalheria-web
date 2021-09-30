@@ -51,7 +51,7 @@
                   </template>
                 </v-autocomplete>
               </v-col>
-              <v-col cols="12" sm="1">
+              <v-col cols="12" sm="1" style="padding-left: 0; padding-right: 0">
                 <v-btn color="success" fab @click="addItem">
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
@@ -93,7 +93,7 @@
                   color="primary"
                   type="text"
                   label="Price"
-                  :value="price"
+                  :value="price? numberToStr(price) : ''"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -146,12 +146,40 @@
                     v-for="(item, i) in saleProducts"
                     :key="`sale_prod_${i}`"
                   >
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>0</td>
-                    <td>{{ item.price }}</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>{{ item.produto ? item.produto.code : '' }}</td>
+                    <td>{{ item.produto ? item.produto.name : ''  }}</td>
+                    <td>
+                      <v-text-field
+                        color="primary"
+                        label=""
+                        type="number"
+                        min="0"
+                        step="1"
+                        v-model="item.quantity"
+                        @input="onChangeQty(item, i)"
+                      ></v-text-field>
+                    </td>
+                    <td>
+                      <v-text-field
+                        color="primary"
+                        type="text"
+                        label=""
+                        v-money="mask"
+                        v-model="values[i].price"
+                        @input="onChangePrice(item, i)"
+                      ></v-text-field>
+                    </td>
+                    <td>
+                      <v-text-field
+                        color="primary"
+                        type="text"
+                        label=""
+                        v-money="mask"
+                        v-model="values[i].discount"
+                        @input="onChangeDiscount(item, i)"
+                      ></v-text-field>
+                    </td>
+                    <td>{{ values[i].total }}</td>
                     <td>
                       <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
@@ -201,13 +229,20 @@ import { MoneyFormat } from '@/mixins'
 import {
   Mode,
   Sale,
+  SaleItem,
   SaleStatus,
   DiscountType,
   Produto,
   Categoria,
 } from '@/models'
 
-export default Vue.extend({
+interface StrSaleItem {
+  price: string,
+  total: string,
+  discount: string
+}
+
+export default MoneyFormat.extend({
   props: {
     id: {
       type: Number,
@@ -225,7 +260,8 @@ export default Vue.extend({
         sku: '',
       } as Produto,
       products: [] as Produto[],
-      saleProducts: [] as Produto[]
+      saleProducts: [] as SaleItem[],
+      values: [] as StrSaleItem[]
     }
   },
   computed: {
@@ -283,6 +319,21 @@ export default Vue.extend({
     },
   },
   methods: {
+    onChangeQty(item: SaleItem, index: number) {
+      this.updateTotal(item, index)
+    },
+    onChangePrice(item: SaleItem, index: number) {
+      item.price = this.strToNumber(this.values[index].price)
+      this.updateTotal(item, index)
+    },
+    onChangeDiscount(item: SaleItem, index: number) {
+      item.discount = this.strToNumber(this.values[index].discount)
+      this.updateTotal(item, index)
+    },
+    updateTotal(item: SaleItem, index: number) {
+      item.total = item.price * item.quantity - item.discount
+      this.values[index].total = this.numberToStr(item.total)
+    },
     onSubmit() {
       if (screen.$mode === Mode.ADD) {
         this.cadastrar()
@@ -311,7 +362,8 @@ export default Vue.extend({
         })
     },
     addItem() {
-      const exists = this.saleProducts.find(p => p.id === this.product.id)
+      const exists = this.saleProducts
+        .find((p) => p.produto && p.produto.id === this.product.id)
 
       if (exists) {
         snackbar.setMessage('Product already added')
@@ -319,11 +371,25 @@ export default Vue.extend({
         return
       }
 
-      this.saleProducts.push({ ...this.product })
+      this.values.push({
+        price: this.numberToStr(this.product.price),
+        discount: this.numberToStr(0),
+        total: this.numberToStr(this.product.price),
+      })
+
+      this.saleProducts.push({
+        produto: this.product,
+        productId: this.product.id,
+        quantity: 1,
+        price: this.product.price,
+        discount: 0,
+        total: 0,
+        discountType: DiscountType.VALOR
+      })
     },
     deleteItem(index: number) {
       this.saleProducts.splice(index, 1)
-    }
+    },
   },
   created() {
     if (this.id) {
