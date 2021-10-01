@@ -20,7 +20,7 @@ export default Vue.extend({
     },
     numberToStr(val: number): string {
       return val
-        .toLocaleString('pt-br', { minimumFractionDigits: 2 })
+        .toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
         .toString()
     },
   }

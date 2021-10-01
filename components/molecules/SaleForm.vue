@@ -1,4 +1,7 @@
 <template>
+  <!--
+    FIXME: esse componente está terrivelmente grande!
+  -->
   <form @submit.prevent="onSubmit">
     <v-row>
       <v-col cols="12" sm="12" md="8">
@@ -93,7 +96,7 @@
                   color="primary"
                   type="text"
                   label="Price"
-                  :value="price? numberToStr(price) : ''"
+                  :value="price ? numberToStr(price) : ''"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -124,7 +127,7 @@
                 <thead>
                   <tr>
                     <th class="text-left">Code</th>
-                    <th class="text-left">Product</th>
+                    <th class="text-left" width="30%">Product</th>
                     <th class="text-left">Qty</th>
                     <th class="text-left">Price</th>
                     <th class="text-left">Discount</th>
@@ -147,7 +150,7 @@
                     :key="`sale_prod_${i}`"
                   >
                     <td>{{ item.produto ? item.produto.code : '' }}</td>
-                    <td>{{ item.produto ? item.produto.name : ''  }}</td>
+                    <td>{{ item.produto ? item.produto.name : '' }}</td>
                     <td>
                       <v-text-field
                         color="primary"
@@ -204,6 +207,65 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col cols="12" sm="12">
+        <v-card style="height: 100%" elevation="4">
+          <v-card-title class="title overline"> Total </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="12" sm="2">
+                <v-text-field
+                  readonly
+                  color="primary"
+                  type="text"
+                  label="Subtotal"
+                  v-money="mask"
+                  :value="subtotal"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="2">
+                <v-text-field
+                  color="primary"
+                  type="text"
+                  label="Ship cost"
+                  v-money="mask"
+                  v-model="totalValues.shipCost"
+                  @input="onChangeShipCost"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="2">
+                <v-text-field
+                  color="primary"
+                  type="text"
+                  label="Discount"
+                  v-money="mask"
+                  v-model="totalValues.discount"
+                  @input="onChangeFinalDiscount"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="2">
+                <v-radio-group
+                  row
+                  label="Discount type"
+                  v-model="form.discountType"
+                >
+                  <v-radio label="%" value="PORCENTAGEM"></v-radio>
+                  <v-radio label="$" value="VALOR"></v-radio>
+                </v-radio-group>
+              </v-col>
+              <v-col cols="12" sm="2" class="ml-auto">
+                <v-text-field
+                  readonly
+                  color="primary"
+                  type="text"
+                  label="Total"
+                  v-money="mask"
+                  :value="total"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" sm="12" md="12">
@@ -222,10 +284,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { MoneyFormat } from '@/mixins'
 import { $axios } from '@/utils/nuxt-instance'
 import { screen, snackbar } from '@/utils/store-access'
-import { MoneyFormat } from '@/mixins'
 import {
   Mode,
   Sale,
@@ -237,9 +298,10 @@ import {
 } from '@/models'
 
 interface StrSaleItem {
-  price: string,
-  total: string,
+  price: string
+  total: string
   discount: string
+  shipCost?: string
 }
 
 export default MoneyFormat.extend({
@@ -253,7 +315,10 @@ export default MoneyFormat.extend({
       loading: false,
       productLoading: false,
       productSearch: '',
-      form: {} as Sale,
+      form: {
+        discount: 0,
+        discountType: DiscountType.PORCENTAGEM,
+      } as Sale,
       categories: [] as Categoria[],
       product: {
         code: '',
@@ -261,7 +326,8 @@ export default MoneyFormat.extend({
       } as Produto,
       products: [] as Produto[],
       saleProducts: [] as SaleItem[],
-      values: [] as StrSaleItem[]
+      values: [] as StrSaleItem[],
+      totalValues:{} as StrSaleItem 
     }
   },
   computed: {
@@ -279,6 +345,31 @@ export default MoneyFormat.extend({
     price(): number {
       if (this.product) return this.product.price
       return 0
+    },
+    subtotal(): string {
+      if (this.saleProducts.length === 0) return this.numberToStr(0)
+
+      const sub = this.saleProducts
+        .map((item) => item.total)
+        .reduce((prev, curr) => prev + curr)
+
+      return this.numberToStr(sub)
+    },
+    total(): string {
+      if (this.saleProducts.length === 0) 
+        return this.numberToStr(0)
+
+      let t = this.saleProducts
+        .map((item) => item.total)
+        .reduce((prev, curr) => prev + curr)
+      
+      if (this.form.discountType === DiscountType.PORCENTAGEM) {
+        t = t - (t * this.form.discount / 100) + this.form.shipCost
+      } else {
+        t = t - this.form.discount + this.form.shipCost
+      }
+
+      return this.numberToStr(t)
     },
     image(): string {
       if (this.product && this.product.image) {
@@ -316,7 +407,7 @@ export default MoneyFormat.extend({
         .finally(() => {
           this.productLoading = false
         })
-    },
+    }
   },
   methods: {
     onChangeQty(item: SaleItem, index: number) {
@@ -329,6 +420,16 @@ export default MoneyFormat.extend({
     onChangeDiscount(item: SaleItem, index: number) {
       item.discount = this.strToNumber(this.values[index].discount)
       this.updateTotal(item, index)
+    },
+    onChangeShipCost() {
+      if (this.totalValues.shipCost) {
+        const shipCost = this.strToNumber(this.totalValues.shipCost)
+        this.$set(this.form, 'shipCost', shipCost)
+      }
+    },
+    onChangeFinalDiscount() {
+      const discount = this.strToNumber(this.totalValues.discount)
+      this.$set(this.form, 'discount', discount)
     },
     updateTotal(item: SaleItem, index: number) {
       item.total = item.price * item.quantity - item.discount
@@ -362,8 +463,9 @@ export default MoneyFormat.extend({
         })
     },
     addItem() {
-      const exists = this.saleProducts
-        .find((p) => p.produto && p.produto.id === this.product.id)
+      const exists = this.saleProducts.find(
+        (p) => p.produto && p.produto.id === this.product.id
+      )
 
       if (exists) {
         snackbar.setMessage('Product already added')
@@ -384,7 +486,7 @@ export default MoneyFormat.extend({
         price: this.product.price,
         discount: 0,
         total: 0,
-        discountType: DiscountType.VALOR
+        discountType: DiscountType.VALOR,
       })
     },
     deleteItem(index: number) {
