@@ -32,7 +32,7 @@
                   placeholder="Customer e-mail"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="11">
+              <v-col cols="12" md="12" lg="11" >
                 <v-autocomplete
                   outlined
                   clearable
@@ -54,8 +54,17 @@
                   </template>
                 </v-autocomplete>
               </v-col>
-              <v-col cols="12" sm="1" style="padding-left: 0; padding-right: 0">
-                <v-btn color="success" fab @click="addItem">
+              <v-col cols="12" md="12" lg="1"
+                :style="{
+                  'padding-left': breakpoint !== 'lg' ? '12px':0, 
+                  'padding-right': breakpoint !== 'lg' ? '12px':0,
+                }">
+                <v-btn
+                  color="success"
+                  @click="addItem"
+                  :block="breakpoint !== 'lg' && breakpoint !== 'xl'"
+                  :fab="breakpoint === 'lg' || breakpoint === 'xl'"
+                >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </v-col>
@@ -110,8 +119,8 @@
             <v-img
               style="margin: 0 auto; margin-top: 30px; border-radius: 10px"
               :src="image"
-              height="420"
-              width="420"
+              :height="imgHeight"
+              :width="imgHeight"
             ></v-img>
           </v-card-text>
         </v-card>
@@ -242,7 +251,7 @@
                   @input="onChangeFinalDiscount"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="2">
+              <v-col cols="12" sm="4">
                 <v-radio-group
                   row
                   label="Discount type"
@@ -327,12 +336,20 @@ export default MoneyFormat.extend({
       products: [] as Produto[],
       saleProducts: [] as SaleItem[],
       values: [] as StrSaleItem[],
-      totalValues:{} as StrSaleItem 
+      totalValues: {} as StrSaleItem,
     }
   },
   computed: {
     isViewMode(): boolean {
       return screen.$mode === Mode.VIEW
+    },
+    breakpoint(): string {
+      return (this as any).$vuetify.breakpoint.name
+    },
+    imgHeight(): string {
+      const w = window.innerWidth
+      if (w <= 1440) return '300'
+      return '420'
     },
     code(): string {
       if (this.product) return this.product.code
@@ -356,15 +373,14 @@ export default MoneyFormat.extend({
       return this.numberToStr(sub)
     },
     total(): string {
-      if (this.saleProducts.length === 0) 
-        return this.numberToStr(0)
+      if (this.saleProducts.length === 0) return this.numberToStr(0)
 
       let t = this.saleProducts
         .map((item) => item.total)
         .reduce((prev, curr) => prev + curr)
-      
+
       if (this.form.discountType === DiscountType.PORCENTAGEM) {
-        t = t - (t * this.form.discount / 100) + this.form.shipCost
+        t = t - (t * this.form.discount) / 100 + this.form.shipCost
       } else {
         t = t - this.form.discount + this.form.shipCost
       }
@@ -407,7 +423,7 @@ export default MoneyFormat.extend({
         .finally(() => {
           this.productLoading = false
         })
-    }
+    },
   },
   methods: {
     onChangeQty(item: SaleItem, index: number) {
