@@ -3,7 +3,7 @@
     FIXME: esse componente está terrivelmente grande!
   -->
   <form @submit.prevent="onSubmit">
-    <v-row>
+    <v-row v-if="!isViewMode">
       <v-col cols="12" sm="12" md="8">
         <v-card style="height: 100%" elevation="4">
           <v-card-title class="title overline"> Sale data </v-card-title>
@@ -457,10 +457,37 @@ export default MoneyFormat.extend({
       }
     },
     find() {
-      // TODO
+      this.loading = true
+      $axios
+        .$get(`/api/sales/${this.id}/items`)
+        .then((r) => {
+          this.loading = false
+          this.form = r.sale
+          this.saleProducts = r.saleItems
+        })
+        .catch((error) => {
+          this.loading = false
+        })
     },
     cadastrar() {
-      // TODO
+      this.loading = true
+      const body = {
+        ...this.form,
+        obs: '',
+        saleItems: this.saleProducts,
+        total: this.strToNumber(this.total)
+      }
+
+      $axios
+        .$post(`/api/sales`, body)
+        .then((r) => {
+          this.loading = false
+          snackbar.setMessage('Venda cadastrada com sucesso')
+          snackbar.setSnackbar(true)
+        })
+        .catch((error) => {
+          this.loading = false
+        })
     },
     voltar() {
       this.$emit('id', undefined)
