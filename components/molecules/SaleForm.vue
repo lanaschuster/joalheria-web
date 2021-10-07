@@ -158,8 +158,8 @@
                     v-for="(item, i) in saleProducts"
                     :key="`sale_prod_${i}`"
                   >
-                    <td>{{ item.produto ? item.produto.code : '' }}</td>
-                    <td>{{ item.produto ? item.produto.name : '' }}</td>
+                    <td>{{ item.product ? item.product.code : '' }}</td>
+                    <td>{{ item.product ? item.product.name : '' }}</td>
                     <td>
                       <v-text-field
                         color="primary"
@@ -167,6 +167,7 @@
                         type="number"
                         min="0"
                         step="1"
+                        :readonly="isViewMode"
                         v-model="item.quantity"
                         @input="onChangeQty(item, i)"
                       ></v-text-field>
@@ -177,6 +178,7 @@
                         type="text"
                         label=""
                         v-money="mask"
+                        :readonly="isViewMode"
                         v-model="values[i].price"
                         @input="onChangePrice(item, i)"
                       ></v-text-field>
@@ -187,6 +189,7 @@
                         type="text"
                         label=""
                         v-money="mask"
+                        :readonly="isViewMode"
                         v-model="values[i].discount"
                         @input="onChangeDiscount(item, i)"
                       ></v-text-field>
@@ -237,6 +240,7 @@
                   type="text"
                   label="Ship cost"
                   v-money="mask"
+                  :readonly="isViewMode"
                   v-model="totalValues.shipCost"
                   @input="onChangeShipCost"
                 ></v-text-field>
@@ -247,6 +251,7 @@
                   type="text"
                   label="Discount"
                   v-money="mask"
+                  :readonly="isViewMode"
                   v-model="totalValues.discount"
                   @input="onChangeFinalDiscount"
                 ></v-text-field>
@@ -256,6 +261,7 @@
                   row
                   label="Discount type"
                   v-model="form.discountType"
+                  :disabled="isViewMode"
                 >
                   <v-radio label="%" value="PORCENTAGEM"></v-radio>
                   <v-radio label="$" value="VALOR"></v-radio>
@@ -456,14 +462,26 @@ export default MoneyFormat.extend({
         this.cadastrar()
       }
     },
-    find() {
+    async find() {
       this.loading = true
-      $axios
+      await $axios
         .$get(`/api/sales/${this.id}/items`)
         .then((r) => {
           this.loading = false
           this.form = r.sale
           this.saleProducts = r.saleItems
+
+          this.totalValues.total = this.numberToStr(this.form.total)
+          this.totalValues.shipCost = this.numberToStr(this.form.shipCost)
+          this.totalValues.discount = this.numberToStr(this.form.discount)
+
+          this.saleProducts.forEach(item => {
+            this.values.push({
+              price: item.product ? this.numberToStr(item.product.price) : this.numberToStr(0),
+              discount: this.numberToStr(item.discount),
+              total: this.numberToStr(item.total),
+            })
+          })
         })
         .catch((error) => {
           this.loading = false
@@ -507,7 +525,7 @@ export default MoneyFormat.extend({
     },
     addItem() {
       const exists = this.saleProducts.find(
-        (p) => p.produto && p.produto.id === this.product.id
+        (p) => p.product && p.product.id === this.product.id
       )
 
       if (exists) {
@@ -523,7 +541,7 @@ export default MoneyFormat.extend({
       })
 
       this.saleProducts.push({
-        produto: this.product,
+        product: this.product,
         productId: this.product.id,
         quantity: 1,
         price: this.product.price,

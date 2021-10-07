@@ -9,7 +9,7 @@ interface SaleItem {
   total: number,
   saleId?: string,
   productId?: string,
-  produto?: Produto,
+  product?: Produto,
   discountType: DiscountType
 }
 
