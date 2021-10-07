@@ -48,6 +48,12 @@
             {{ item.status ? 'Ativa' : 'Cancelada' }}
           </v-chip>
         </template>
+        <template v-slot:[`item.createdAt`]="{ item }">
+          {{ new Date(item.createdAt).toLocaleString() }}
+        </template>
+        <template v-slot:[`item.total`]="{ item }">
+          {{ numberToStr(item.total) }}
+        </template>
       </v-data-table>
       <v-pagination
         v-model="options.page"
@@ -58,13 +64,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { auth } from '@/store'
+import { MoneyFormat } from '@/mixins'
 import { $axios } from '@/utils/nuxt-instance'
 import { screen } from '@/utils/store-access'
 import { Mode, Module, Action } from '@/models'
 
-export default Vue.extend({
+export default MoneyFormat.extend({
   data() {
     return {
       options: {
@@ -84,7 +90,7 @@ export default Vue.extend({
           value: 'status',
         },
         {
-          text: 'Data',
+          text: 'Date',
           sortable: true,
           align: 'center',
           value: 'createdAt',
