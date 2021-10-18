@@ -524,6 +524,7 @@ export default MoneyFormat.extend({
         })
     },
     addItem() {
+      if (!this.product || !this.product.code) return
       const exists = this.saleProducts.find(
         (p) => p.product && p.product.id === this.product.id
       )

@@ -25,10 +25,10 @@
                 <v-icon> mdi-magnify </v-icon>
               </v-btn>
             </template>
-            <span>Visualizar</span>
+            <span>View sale</span>
           </v-tooltip>
 
-          <v-tooltip top v-if="canDelete">
+          <v-tooltip top v-if="canDelete && item.status == 'ACTIVE'">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-on="on"
@@ -39,13 +39,16 @@
                 <v-icon> mdi-close-box </v-icon>
               </v-btn>
             </template>
-            <span>Cancelar</span>
+            <span>Cancel sale</span>
           </v-tooltip>
         </template>
 
         <template v-slot:[`item.status`]="{ item }">
-          <v-chip>
-            {{ item.status ? 'Ativa' : 'Cancelada' }}
+          <v-chip
+            :color="item.status == 'ACTIVE' ? 'green' : 'red'"
+            text-color="white"
+          >
+            {{ item.status == 'ACTIVE' ? 'Active' : 'Canceled' }}
           </v-chip>
         </template>
         <template v-slot:[`item.createdAt`]="{ item }">
@@ -67,7 +70,7 @@
 import { auth } from '@/store'
 import { MoneyFormat } from '@/mixins'
 import { $axios } from '@/utils/nuxt-instance'
-import { screen } from '@/utils/store-access'
+import { screen, snackbar } from '@/utils/store-access'
 import { Mode, Module, Action } from '@/models'
 
 export default MoneyFormat.extend({
@@ -108,7 +111,7 @@ export default MoneyFormat.extend({
           value: 'total',
         },
         {
-          text: 'Opções',
+          text: 'Options',
           sortable: false,
           align: 'center',
           value: 'action',
@@ -145,25 +148,31 @@ export default MoneyFormat.extend({
     },
     canAdd() {
       const permissions = auth.$permissions
-      return permissions.find(p => {
-        return p.module === Module.USERS &&
+      return permissions.find((p) => {
+        return (
+          p.module === Module.USERS &&
           (p.action === Action.ALL || p.action === Action.WRITE)
+        )
       })
     },
     canEditUser() {
       const permissions = auth.$permissions
-      return permissions.find(p => {
-        return p.module === Module.USERS &&
+      return permissions.find((p) => {
+        return (
+          p.module === Module.USERS &&
           (p.action === Action.ALL || p.action === Action.UPDATE)
+        )
       })
     },
     canDelete() {
       const permissions = auth.$permissions
-      return permissions.find(p => {
-        return p.module === Module.USERS &&
+      return permissions.find((p) => {
+        return (
+          p.module === Module.USERS &&
           (p.action === Action.ALL || p.action === Action.DELETE)
+        )
       })
-    }
+    },
   },
   methods: {
     find() {
@@ -198,8 +207,17 @@ export default MoneyFormat.extend({
       this.$emit('id', id)
     },
     cancel(id: number) {
-      screen.setMode(Mode.DELETE)
-      this.$emit('id', id)
+      $axios
+        .$post(`/api/sales/${id}/cancel`)
+        .then((r) => {
+          this.find()
+          this.loading = false
+          snackbar.setMessage('Canceled sale.')
+          snackbar.setSnackbar(true)
+        })
+        .catch((error) => {
+          this.loading = false
+        })
     },
     newSale() {
       screen.setMode(Mode.ADD)
