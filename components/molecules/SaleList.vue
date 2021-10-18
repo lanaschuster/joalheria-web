@@ -34,6 +34,7 @@
                 v-on="on"
                 v-bind="attrs"
                 icon
+                color="error"
                 @click.stop="cancel(item.id)"
               >
                 <v-icon> mdi-close-box </v-icon>

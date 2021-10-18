@@ -127,12 +127,19 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-if="isViewMode" cols="12" sm="12" md="4">
+      <v-col v-if="isViewMode" cols="12" sm="12">
         <v-chip
           :color="form.status == 'ACTIVE' ? 'green' : 'red'"
           text-color="white"
+          class="mr-2"
         >
           {{ form.status == 'ACTIVE' ? 'Active' : 'Canceled' }}
+        </v-chip>
+        <v-chip class="mr-2">
+          <strong>Client:</strong> {{ form.clientName }}
+        </v-chip>
+        <v-chip>
+          <strong>E-mail:</strong> {{ form.clientEmail }}
         </v-chip>
       </v-col>
       <v-col cols="12" sm="12">
@@ -310,14 +317,14 @@
     </v-row>
     <v-row>
       <v-col cols="12" sm="12" md="12">
-        <v-btn outlined color="primary" @click="voltar">Voltar</v-btn>
+        <v-btn outlined color="primary" @click="voltar">Back</v-btn>
         <v-btn
           type="submit"
           v-if="!isViewMode"
           color="primary"
           :loading="loading"
         >
-          Salvar
+          Save
         </v-btn>
       </v-col>
     </v-row>
