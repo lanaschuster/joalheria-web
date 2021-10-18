@@ -127,6 +127,14 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col v-if="isViewMode" cols="12" sm="12" md="4">
+        <v-chip
+          :color="form.status == 'ACTIVE' ? 'green' : 'red'"
+          text-color="white"
+        >
+          {{ form.status == 'ACTIVE' ? 'Active' : 'Canceled' }}
+        </v-chip>
+      </v-col>
       <v-col cols="12" sm="12">
         <v-card style="height: 100%" elevation="4">
           <v-card-title class="title overline"> Products </v-card-title>
@@ -236,24 +244,42 @@
               </v-col>
               <v-col cols="12" sm="2">
                 <v-text-field
+                  v-if="!isViewMode"
+                  color="primary"
+                  type="text"
+                  label="Ship cost"
+                  v-money="mask"
+                  v-model="totalValues.shipCost"
+                  @input="onChangeShipCost"
+                ></v-text-field>
+                <v-text-field
+                  v-else
                   color="primary"
                   type="text"
                   label="Ship cost"
                   v-money="mask"
                   :readonly="isViewMode"
-                  v-model="totalValues.shipCost"
-                  @input="onChangeShipCost"
+                  :value="totalValues.shipCost"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="2">
                 <v-text-field
+                  v-if="!isViewMode"
+                  color="primary"
+                  type="text"
+                  label="Discount"
+                  v-money="mask"
+                  v-model="totalValues.discount"
+                  @input="onChangeFinalDiscount"
+                ></v-text-field>
+                <v-text-field
+                  v-else
                   color="primary"
                   type="text"
                   label="Discount"
                   v-money="mask"
                   :readonly="isViewMode"
-                  v-model="totalValues.discount"
-                  @input="onChangeFinalDiscount"
+                  :value="totalValues.discount"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
@@ -331,6 +357,7 @@ export default MoneyFormat.extend({
       productLoading: false,
       productSearch: '',
       form: {
+        status: SaleStatus.ACTIVE,
         discount: 0,
         discountType: DiscountType.PORCENTAGEM,
       } as Sale,
@@ -468,7 +495,7 @@ export default MoneyFormat.extend({
         .$get(`/api/sales/${this.id}/items`)
         .then((r) => {
           this.loading = false
-          this.form = r.sale
+          this.form = { ...r.sale }
           this.saleProducts = r.saleItems
 
           this.totalValues.total = this.numberToStr(this.form.total)
