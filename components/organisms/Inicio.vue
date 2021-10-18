@@ -3,17 +3,23 @@
     <v-col cols="12" sm="12" class="mb-8">
       <h1 class="title text-h4">Welcome, {{ username }}</h1>
     </v-col>
-    <v-col cols="12" sm="12" md="3">
-      <IndicadorUsers />
+    <v-col cols="12" sm="12" md="2">
+      <IndicadorSales />
     </v-col>
-    <v-col cols="12" sm="12" md="3">
-      <IndicadorSuppliers />
+    <v-col cols="12" sm="12" md="2">
+      <IndicadorCanceledSales />
     </v-col>
-    <v-col cols="12" sm="12" md="3">
+    <v-col cols="12" sm="12" md="2">
       <IndicadorProducts />
     </v-col>
-    <v-col cols="12" sm="12" md="3">
+    <v-col cols="12" sm="12" md="2">
+      <IndicadorSuppliers />
+    </v-col>
+    <v-col cols="12" sm="12" md="2">
       <IndicadorCategories />
+    </v-col>
+    <v-col cols="12" sm="12" md="2">
+      <IndicadorUsers />
     </v-col>
     <v-col cols="12" sm="12" md="6" lg="3">
       <ProductsByCategory />
@@ -34,6 +40,8 @@ import {
   IndicadorSuppliers,
   IndicadorProducts,
   IndicadorCategories,
+  IndicadorSales,
+  IndicadorCanceledSales,
   ProductsByProvider
 } from '@/components/atoms'
 
@@ -45,7 +53,9 @@ export default Vue.extend({
     IndicadorUsers,
     IndicadorSuppliers,
     IndicadorProducts,
-    IndicadorCategories
+    IndicadorCategories,
+    IndicadorSales,
+    IndicadorCanceledSales
   },
   data() {
     return {
