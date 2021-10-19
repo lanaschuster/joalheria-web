@@ -27,6 +27,9 @@
     <v-col cols="12" sm="12" md="6" lg="3">
       <ProductsByProvider />
     </v-col>
+    <v-col cols="12" sm="12" md="6" lg="3">
+      <MostRecentSales />
+    </v-col>
   </v-row>
 </template>
 
@@ -42,7 +45,8 @@ import {
   IndicadorCategories,
   IndicadorSales,
   IndicadorCanceledSales,
-  ProductsByProvider
+  ProductsByProvider,
+  MostRecentSales
 } from '@/components/atoms'
 
 export default Vue.extend({
@@ -55,7 +59,8 @@ export default Vue.extend({
     IndicadorProducts,
     IndicadorCategories,
     IndicadorSales,
-    IndicadorCanceledSales
+    IndicadorCanceledSales,
+    MostRecentSales
   },
   data() {
     return {

@@ -23,19 +23,25 @@
         </v-list-item>
       </v-list>
       <template v-slot:prepend>
-        <v-list-item :class="{'pl-0': miniVariant, 'pr-0': miniVariant}">
+        <v-list-item :class="{'pl-0': miniVariant, 'pr-0': miniVariant, 'pt-4': true}">
           <v-list-item-content>
-            <v-avatar :height="miniVariant ? '40' : '200'">
+            <v-avatar :height="miniVariant ? '40' : '180'">
               <v-img
-                :height="miniVariant ? '40' : '200'"
-                :width="miniVariant ? '40' : '200'"
+                :height="miniVariant ? '40' : '180'"
+                :width="miniVariant ? '40' : '180'"
                 lazy-src="/img/logo.jpg"
                 style="position: absolute"
                 :src="imagePreview"
                 alt="Avatar"
               ></v-img>
             </v-avatar>
-            <p class="text-center mt-4" v-if="!miniVariant">{{ user.name }}</p>
+            <p 
+              v-if="!miniVariant"
+              style="font-weight: 500;"
+              class="text-center mt-4" 
+            >
+              Hello, {{ user.name }}
+            </p>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -70,7 +76,6 @@
       </v-btn>
       <v-toolbar-title>
         {{ title }}
-        <v-icon>mdi-diamond-stone</v-icon>
       </v-toolbar-title>
       <v-spacer />
     </v-app-bar>
@@ -161,7 +166,7 @@ export default Vue.extend({
       if (readProducts) {
         mainMenu.push({
           icon: 'mdi-ring',
-          title: 'Products',
+          title: 'Jewels',
           to: 'products'
         })
       }
