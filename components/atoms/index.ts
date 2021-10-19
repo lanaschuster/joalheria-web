@@ -10,3 +10,4 @@ export { default as IndicadorCategories } from './charts/IndicadorCategories.vue
 export { default as IndicadorSales } from './charts/IndicadorSales.vue'
 export { default as IndicadorCanceledSales } from './charts/IndicadorCanceledSales.vue'
 export { default as MostRecentSales } from './charts/MostRecentSales.vue'
+export { default as BestSellingProducts } from './charts/BestSellingProducts.vue'

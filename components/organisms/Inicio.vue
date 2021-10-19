@@ -21,14 +21,17 @@
     <v-col cols="12" sm="12" md="2">
       <IndicadorUsers />
     </v-col>
+      <v-col cols="12" sm="12" md="6" lg="3">
+      <MostRecentSales />
+    </v-col>
+    <v-col cols="12" sm="12" md="6" lg="3">
+      <BestSellingProducts />
+    </v-col>
     <v-col cols="12" sm="12" md="6" lg="3">
       <ProductsByCategory />
     </v-col>
     <v-col cols="12" sm="12" md="6" lg="3">
       <ProductsByProvider />
-    </v-col>
-    <v-col cols="12" sm="12" md="6" lg="3">
-      <MostRecentSales />
     </v-col>
   </v-row>
 </template>
@@ -46,7 +49,8 @@ import {
   IndicadorSales,
   IndicadorCanceledSales,
   ProductsByProvider,
-  MostRecentSales
+  MostRecentSales,
+  BestSellingProducts
 } from '@/components/atoms'
 
 export default Vue.extend({
@@ -60,7 +64,8 @@ export default Vue.extend({
     IndicadorCategories,
     IndicadorSales,
     IndicadorCanceledSales,
-    MostRecentSales
+    MostRecentSales,
+    BestSellingProducts
   },
   data() {
     return {
