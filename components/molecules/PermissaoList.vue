@@ -1,16 +1,16 @@
 <template>
   <v-row>
     <v-col cols="12" sm="12" md="12" class="d-flex justify-end">
-      <v-btn @click="add" color="success" v-if="canAddPermission"> Novo perfil </v-btn>
+      <v-btn @click="add" color="success" v-if="canAddPermission"> New Profile </v-btn>
     </v-col>
     <v-col cols="12" md="12">
       <v-data-table
-        no-data-text="Nenhum perfil cadastrado."
+        no-data-text="No profile registered."
         :headers="headers"
         :items="roles"
         :loading="loading"
         :options.sync="options"
-        loading-text="Carregando..."
+        loading-text="Loading..."
       >
         <template v-slot:[`item.action`]="{ item }">
           <v-tooltip top>
@@ -19,7 +19,7 @@
                 <v-icon> mdi-magnify </v-icon>
               </v-btn>
             </template>
-            <span>Visualizar</span>
+            <span>View</span>
           </v-tooltip>
 
           <v-tooltip top v-if="canEditPermission">
@@ -28,7 +28,7 @@
                 <v-icon> mdi-pencil </v-icon>
               </v-btn>
             </template>
-            <span>Editar</span>
+            <span>Edit</span>
           </v-tooltip>
 
         </template>
@@ -67,7 +67,7 @@ export default Vue.extend({
           value: 'id',
         },
         {
-          text: 'Nome',
+          text: 'Profile name',
           sortable: true,
           align: 'start',
           value: 'name',
@@ -79,7 +79,7 @@ export default Vue.extend({
           value: 'tag',
         },
         {
-          text: 'Opções',
+          text: 'Options',
           sortable: false,
           align: 'center',
           value: 'action',

@@ -32,7 +32,7 @@
                 <v-icon> mdi-magnify </v-icon>
               </v-btn>
             </template>
-            <span>Visualizar</span>
+            <span>View</span>
           </v-tooltip>
 
           <v-tooltip top v-if="canEdit">
@@ -41,7 +41,7 @@
                 <v-icon> mdi-pencil </v-icon>
               </v-btn>
             </template>
-            <span>Editar</span>
+            <span>Edit</span>
           </v-tooltip>
 
           <v-tooltip top v-if="canDelete">
@@ -50,7 +50,7 @@
                 <v-icon> mdi-delete </v-icon>
               </v-btn>
             </template>
-            <span>Excluir</span>
+            <span>Delete</span>
           </v-tooltip>
         </template>
         <template v-slot:[`item.image`]="{ item }">

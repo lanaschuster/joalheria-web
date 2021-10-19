@@ -42,22 +42,22 @@ export default Vue.extend({
   computed: {
     title(): string {
       if (screen.$mode === Mode.VIEW) {
-        return `Visualizando usuário`
+        return `Viewing user`
       } else if (screen.$mode === Mode.ADD) {
-        return `Cadastrando novo usuário`
+        return `Registering new user`
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando usuário`
+        return `Editing user`
       } else {
-        return 'Usuários'
+        return 'Users'
       }
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'Usuário ID: ' + this.id
+        return 'User ID: ' + this.id
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando usuário ID: ` + this.id
-      } else {
-        return 'Listagem de usuários'
+        return `Editing user ID: ` + this.id
+      } else if (screen.$mode === Mode.LIST) {
+        return 'Registered users'
       }
 
       return ''

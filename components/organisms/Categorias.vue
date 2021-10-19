@@ -46,22 +46,22 @@ export default Vue.extend({
   computed: {
     title(): string {
       if (screen.$mode === Mode.VIEW) {
-        return `Visualizando categoria`
+        return `Viewing Category`
       } else if (screen.$mode === Mode.ADD) {
-        return `Cadastrando nova categoria`
+        return `Registering new Category`
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando categoria`
+        return `Editing Category`
       } else {
-        return 'Categorias'
+        return 'Categories'
       }
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'Categoria ID: ' + this.id
+        return 'Category ID: ' + this.id
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando categoria ID: ` + this.id
+        return `Editing Category ID: ` + this.id
       } else if (screen.$mode === Mode.LIST) {
-        return 'Listagem de categorias de produto'
+        return 'Registered Jewel Categories'
       }
 
       return ''

@@ -37,22 +37,22 @@ export default Vue.extend({
   computed: {
     title(): string {
       if (screen.$mode === Mode.VIEW) {
-        return `Visualizando permissão`
+        return `Viewing Permission`
       } else if (screen.$mode === Mode.ADD) {
-        return `Cadastrando nova permissão`
+        return `Registering new Permission`
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando permissão`
+        return `Editing Permission`
       } else {
-        return 'Permissões'
+        return 'Permissions'
       }
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'Permissão ID: ' + this.id
+        return 'Permission ID: ' + this.id
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando permissão ID: ` + this.id
+        return `Editing Permission ID: ` + this.id
       } else {
-        return 'Listagem dos perfis de permissões dos usuários'
+        return 'Registered user permissions'
       }
 
       return ''

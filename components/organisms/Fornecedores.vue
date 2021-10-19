@@ -46,22 +46,22 @@ export default Vue.extend({
   computed: {
     title(): string {
       if (screen.$mode === Mode.VIEW) {
-        return `Visualizando fornecedor`
+        return `Viewing supplier`
       } else if (screen.$mode === Mode.ADD) {
-        return `Cadastrando novo fornecedor`
+        return `Registering a new supplier`
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando fornecedor`
+        return `Editing supplier`
       } else {
-        return 'Fornecedores'
+        return 'Suppliers'
       }
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'Fornecedor ID: ' + this.id
+        return 'Supplier ID: ' + this.id
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando fornecedor ID: ` + this.id
+        return `Editing supplier ID: ` + this.id
       } else if (screen.$mode === Mode.LIST) {
-        return 'Listagem de fornecedores'
+        return 'Registered suppliers'
       }
 
       return ''

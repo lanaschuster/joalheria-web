@@ -37,18 +37,18 @@ export default Vue.extend({
   computed: {
     title(): string {
       if (screen.$mode === Mode.VIEW) {
-        return `Visualizando venda`
+        return `Viewing Sale Order`
       } else if (screen.$mode === Mode.ADD) {
-        return `Cadastrando nova venda`
+        return `Registering new Sale Order`
       } else {
         return 'Sales'
       }
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'Venda ID: ' + this.id
+        return 'Sale Order ID: ' + this.id
       } else if (screen.$mode === Mode.LIST) {
-        return 'Listagem das vendas realizadas'
+        return 'Registered sales'
       }
 
       return ''

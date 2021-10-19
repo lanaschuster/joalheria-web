@@ -2,14 +2,14 @@
   <v-row>
     <v-col cols="12" sm="12" md="3">
       <v-text-field
-        label="Buscar"
+        label="Search"
         color="secondary"
         v-model="options.filter"
-        placeholder="Digite para filtrar por nome, sobrenome e e-mail"
+        placeholder="Search by name or e-mail"
       ></v-text-field>
     </v-col>
     <v-col cols="12" sm="12" md="9" class="d-flex align-center justify-end">
-      <v-btn @click="novoUsuario" color="success" v-if="canAddUser"> Novo usuário </v-btn>
+      <v-btn @click="novoUsuario" color="success" v-if="canAddUser"> New user </v-btn>
     </v-col>
     <v-col cols="12" md="12">
       <v-data-table
@@ -33,7 +33,7 @@
                 <v-icon> mdi-magnify </v-icon>
               </v-btn>
             </template>
-            <span>Visualizar</span>
+            <span>View</span>
           </v-tooltip>
 
           <v-tooltip top v-if="canEditUser">
@@ -47,10 +47,10 @@
                 <v-icon> mdi-pencil </v-icon>
               </v-btn>
             </template>
-            <span>Editar</span>
+            <span>Edit</span>
           </v-tooltip>
 
-          <v-tooltip top v-if="canDeleteUser">
+          <!-- <v-tooltip top v-if="canDeleteUser">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-on="on"
@@ -61,13 +61,13 @@
                 <v-icon> mdi-delete </v-icon>
               </v-btn>
             </template>
-            <span>Excluir</span>
-          </v-tooltip>
+            <span>Delete</span>
+          </v-tooltip> -->
         </template>
 
         <template v-slot:[`item.isActive`]="{ item }">
-          <v-chip>
-            {{ item.isActive ? 'Ativo' : 'Bloqueado' }}
+          <v-chip :color="item.isActive ? 'green' : 'red'">
+            {{ item.isActive ? 'Active' : 'Blocked' }}
           </v-chip>
         </template>
 
@@ -112,13 +112,13 @@ export default Vue.extend({
           value: 'id',
         },
         {
-          text: 'Nome',
+          text: 'Name',
           sortable: true,
           align: 'start',
           value: 'name',
         },
         {
-          text: 'Sobrenome',
+          text: 'Last name',
           sortable: true,
           align: 'start',
           value: 'lastName',
@@ -130,7 +130,7 @@ export default Vue.extend({
           value: 'email',
         },
         {
-          text: 'Permissão',
+          text: 'Permission',
           sortable: false,
           align: 'center',
           value: 'role.name',
@@ -142,7 +142,7 @@ export default Vue.extend({
           value: 'isActive',
         },
         {
-          text: 'Opções',
+          text: 'Options',
           sortable: false,
           align: 'center',
           value: 'action',

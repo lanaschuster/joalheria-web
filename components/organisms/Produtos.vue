@@ -42,24 +42,24 @@ export default Vue.extend({
   computed: {
     title(): string {
       if (screen.$mode === Mode.VIEW) {
-        return `Visualizando produto`
+        return `Viewing Jewel`
       } else if (screen.$mode === Mode.ADD) {
-        return `Cadastrando novo produto`
+        return `Registering new Jewel`
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando produto`
+        return `Editing Jewel`
       } else {
-        return 'Produtos'
+        return 'Jewels'
       }
     },
     subtitle(): string {
       if (screen.$mode === Mode.VIEW) {
-        return 'Produto ID: ' + this.id
+        return 'Jewel ID: ' + this.id
       } else if (screen.$mode === Mode.EDIT) {
-        return `Editando produto ID: ` + this.id
+        return `Editing Jewel ID: ` + this.id
       } else if (screen.$mode === Mode.LIST) {
-        return 'Listagem de produtos'
+        return 'Registered Jewels'
       } else if (screen.$mode === Mode.ADD) {
-        return 'Selecione uma imagem e preencha os campos corretamente.'
+        return 'Select an image and fill in the fields correctly.'
       }
 
       return ''
