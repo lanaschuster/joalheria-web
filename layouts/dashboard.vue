@@ -128,8 +128,8 @@ export default Vue.extend({
     menus(): Array<any> {
       let mainMenu: Array<any> = [
         {
-          icon: 'mdi-home',
-          title: 'Home',
+          icon: 'mdi-view-dashboard',
+          title: 'Dashboard',
           to: 'home'
         },
         {
@@ -157,7 +157,7 @@ export default Vue.extend({
 
       if (readUsers) {
         mainMenu.push({
-          icon: 'mdi-account',
+          icon: 'mdi-account-group',
           title: 'Users',
           to: 'users'
         })

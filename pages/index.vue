@@ -86,6 +86,9 @@ export default Vue.extend({
 </script>
 
 <style>
+.fw-500 {
+  font-weight: 500 !important;
+}
 .main {
   padding-left: 80px !important;
   padding-right: 80px !important;

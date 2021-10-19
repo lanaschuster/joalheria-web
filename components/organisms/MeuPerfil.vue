@@ -1,6 +1,6 @@
 <template>
   <div class="component">
-    <h1 class="title text-h4 mb-8">My Account</h1>
+    <h1 class="title text-h4 mb-8 fw-500">My Account</h1>
     <v-row justify="center">
       <v-col cols="12" sm="12" md="12">
         <v-card class="mb-6">
