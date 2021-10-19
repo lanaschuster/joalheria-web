@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" sm="12" class="mb-8">
-      <h1 class="title text-h4">Welcome, {{ username }}</h1>
+      <h1 class="title text-h4">Dashboard</h1>
     </v-col>
     <v-col cols="12" sm="12" md="2">
       <IndicadorSales />

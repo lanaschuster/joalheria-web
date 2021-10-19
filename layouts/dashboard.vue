@@ -79,7 +79,7 @@
       </v-toolbar-title>
       <v-spacer />
     </v-app-bar>
-    <v-main>
+    <v-main style="background-color: #F7F7F7">
       <v-container>
         <Nuxt />
       </v-container>
