@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="4" height="100%"> 
+  <v-card elevation="4" height="100%">
     <v-card-title class="title overline">Most recent sales</v-card-title>
     <v-card-text>
       <v-chip
@@ -13,11 +13,12 @@
         <div>
           {{ new Date(sale.createdAt).toLocaleString() }}
         </div>
-        <div>
-          <strong>Total:</strong> {{ sale.total }} 
-        </div>
+        <div><strong>Total:</strong> {{ sale.total }}</div>
       </v-chip>
     </v-card-text>
+    <v-card-actions class="d-flex justify-center">
+      <v-btn color="secondary" style="color: #212121" class="mt-8" nuxt to="sales">View more</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -44,7 +45,6 @@ export default Vue.extend({
         .then((r) => {
           this.loading = false
           this.sales = r
-          console.log(r)
         })
         .catch((error) => {
           this.loading = false
