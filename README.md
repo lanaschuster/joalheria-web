@@ -1,4 +1,9 @@
-# Joaleria Web
+# Joalheria Web
+
+Aplicação para gerenciamento de pequenas joalherias, desenvolvida em Nuxt.js + Vuetify
+
+
+Em construção...
 
 ## Build Setup
 
