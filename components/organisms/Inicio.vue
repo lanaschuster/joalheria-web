@@ -1,39 +1,22 @@
 <template>
-  <v-row>
-    <v-col cols="12" sm="12" class="mb-8">
-      <h1 class="title text-h4 fw-500">Dashboard</h1>
-    </v-col>
-    <v-col cols="12" sm="12" md="2">
-      <IndicadorSales />
-    </v-col>
-    <v-col cols="12" sm="12" md="2">
-      <IndicadorCanceledSales />
-    </v-col>
-    <v-col cols="12" sm="12" md="2">
-      <IndicadorProducts />
-    </v-col>
-    <v-col cols="12" sm="12" md="2">
-      <IndicadorSuppliers />
-    </v-col>
-    <v-col cols="12" sm="12" md="2">
-      <IndicadorCategories />
-    </v-col>
-    <v-col cols="12" sm="12" md="2">
-      <IndicadorUsers />
-    </v-col>
-      <v-col cols="12" sm="12" md="6" lg="3">
-      <MostRecentSales />
-    </v-col>
-    <v-col cols="12" sm="12" md="6" lg="3">
-      <BestSellingProducts />
-    </v-col>
-    <v-col cols="12" sm="12" md="6" lg="3">
+  <div class="my-container">
+    <h1 class="title text-h4 fw-500 mb-8">Dashboard</h1>
+
+    <div class="wrapper indicador-wrapper">
+      <IndicadorSales class="indicador" />
+      <IndicadorCanceledSales class="indicador" />
+      <IndicadorProducts class="indicador" />
+      <IndicadorSuppliers class="indicador" />
+      <IndicadorCategories class="indicador" />
+      <IndicadorUsers class="indicador" />
+    </div>
+    <div class="wrapper grafico-wrapper">
+      <MostRecentSales class="grafico" />
+      <BestSellingProducts class="grafico" />
       <ProductsByCategory />
-    </v-col>
-    <v-col cols="12" sm="12" md="6" lg="3">
       <ProductsByProvider />
-    </v-col>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -107,5 +90,57 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+.my-container {
+  padding: 2rem 0 4rem;
+}
+.wrapper {
+  margin-bottom: 2rem;
+  max-width: 100%;
+  width: 100%;
+}
+.grafico {
+  max-width: 100%;
+  width: 100%;
+}
+.indicador-wrapper {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(6, 1fr);
+}
+.grafico-wrapper {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(4, 23.7%);
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1260px){
+  .grafico-wrapper {
+    grid-template-columns: repeat(2, 48%);
+  }
+}
+@media screen and (min-width: 569px) and (max-width: 1024px){
+  .indicador-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grafico-wrapper {
+    grid-template-columns: repeat(2, 48%);
+  }
+}
+@media screen and (min-width: 401px) and (max-width: 568px){
+  .indicador-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grafico-wrapper {
+    grid-template-columns: repeat(1, 100%);
+  }
+}
+@media screen and (max-width: 400px){
+  .indicador-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .grafico-wrapper {
+    grid-template-columns: repeat(1, 100%);
+  }
+}
 </style>
