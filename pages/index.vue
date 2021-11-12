@@ -5,8 +5,8 @@
         <v-img
           contain
           style="margin: 0 auto;"
-          :height="height"
-          :width="width"
+          height="300px"
+          width="300px"
           src="/img/logo.png" 
           alt="Logo"
         ></v-img>
@@ -58,21 +58,7 @@ export default Vue.extend({
   computed: {
     loading() {
       return auth.$loading
-    },
-    height() {
-      if ((this as any).$vuetify.breakpoint.name == 'md') {
-        return '200'
-      }
-
-      return '300'
-    },
-    width() {
-      if ((this as any).$vuetify.breakpoint.name == 'md') {
-        return '200'
-      }
-
-      return '300'
-    },
+    }
   },
   methods: {
     async login() {

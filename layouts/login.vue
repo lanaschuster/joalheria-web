@@ -1,34 +1,12 @@
 <template>
   <v-app>
     <v-main>
-      <v-container class="full-width">
-        <v-row>
-          <v-col
-            class="hidden-sm-and-down full-height background"
-            cols="12"
-            sm="12"
-            md="4"
-          >
-            <div class="d-flex flex-column justify-center align-center">
-              <v-img
-                :style="{ 'margin-top': margin }"
-                src="/img/image857.png"
-                alt="Logo"
-              ></v-img>
-              <span class="white--text description mt-10">
-                Jewellery Management made simple <strong>.</strong>
-              </span>
-            </div>
-          </v-col>
-          <v-col
-            class="full-height d-flex align-center justify-center pl-14 pr-14"
-            cols="12"
-            sm="12"
-            md="8"
-          >
-            <Nuxt />
-          </v-col>
-        </v-row>
+      <v-container class="full-width my-container">
+        <section class="background full-height d-flex align-center justify-center">
+        </section>
+        <section class="form full-height d-flex align-center justify-center">
+          <Nuxt />
+        </section>
       </v-container>
     </v-main>
     <Snackbar />
@@ -38,33 +16,29 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Snackbar } from '@/components/molecules'
+import Permissions from '~/pages/dashboard/permissions.vue'
 
 export default Vue.extend({
   middleware: 'guest',
   components: {
     Snackbar,
-  },
-  computed: {
-    margin() {
-      if (process.browser) {
-        const width = window.innerWidth
-        if (width <= 1400) {
-          return '90px'
-        }
-      }
-
-      return '200px'
-    }
+    Permissions,
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.my-container {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
 .full-height {
   height: 100vh;
 }
 .background {
   background-color: #cb997e;
+  border-radius: 0 30px 30px 0;
 }
 .full-width {
   min-width: 100%;
@@ -76,10 +50,25 @@ export default Vue.extend({
   text-align: center;
   margin-bottom: 60px;
 }
-
+@media screen and (min-width: 1025px) {
+  .form {
+    padding: 0 16rem;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .form {
+    padding: 0 2rem;
+  }
+}
 @media screen and (max-width: 1024px) {
   .description {
     font-size: 18px;
+  }
+  .background {
+    display: none !important;
+  }
+  .my-container {
+    grid-template-columns: 1fr;
   }
 }
 </style>
