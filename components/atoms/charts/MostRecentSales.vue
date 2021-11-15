@@ -1,23 +1,24 @@
 <template>
-  <v-card elevation="4" height="100%">
-    <v-card-title class="title overline">Most recent sales</v-card-title>
+  <v-card elevation="4">
+    <v-card-title class="title overline d-flex justify-space-between align-center">
+      <span>Most recent sales</span>
+      <v-btn text color="secondary" style="color: #212121 !important;"  nuxt to="sales">View more</v-btn>
+    </v-card-title>
     <v-card-text>
-      <v-chip
-        label
-        color="primary"
+      <div
         v-for="(sale, i) in sales"
         :key="`sale_${i}`"
         style="height: 100%"
-        class="mb-4 d-flex justify-space-between"
+        class="mb-4 chip"
       >
-        <div>
+        <span>
           {{ new Date(sale.createdAt).toLocaleString() }}
-        </div>
-        <div><strong>Total:</strong> {{ sale.total }}</div>
-      </v-chip>
+        </span>
+        <span><strong class="mr-2">Total:</strong> {{ sale.total.toFixed(2) }}</span>
+      </div>
     </v-card-text>
-    <v-card-actions class="d-flex justify-center">
-      <v-btn color="secondary" style="color: #212121" class="mt-8" nuxt to="sales">View more</v-btn>
+    <v-card-actions>
+      
     </v-card-actions>
   </v-card>
 </template>
@@ -58,6 +59,24 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.chip {
+  border-radius: 4px;
+  padding: 4px .8rem;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+.chip:hover {
+  background-color: #efefef;
+  border-radius: 0px;
+}
+.chip span {
+  word-break: initial;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  /* padding-right: 1px; */
+}
 ::v-deep .v-chip__content {
   width: 100%;
   padding: 4px;

@@ -1,17 +1,30 @@
 <template>
   <v-card elevation="4" height="100%" :style="{'--primary': $vuetify.theme.themes.light.primary}">
-    <v-card-title class="title overline">Best selling jewels</v-card-title>
+    <v-card-title class="title overline">Top selling jewels</v-card-title>
     <v-card-text>
       <div
         v-for="(jewel, i) in jewels"
         :key="`jewel_${i}`"
         style="height: 100%"
-        class="mb-4 d-flex justify-space-between chip"
+        class="mb-4 chip d-flex align-center justify-space-between"
       >
+        <div class="d-flex align-center">
+          <div
+            class="product-img"
+            :style="{
+              'background': `url(${url(jewel.image)}) no-repeat`,
+              'background-size': 'cover',
+              'background-position': 'center'
+            }"
+          ></div>
+          <span>
+            {{ jewel.name }}
+          </span>
+
+        </div>
         <span>
-          {{ jewel.name }}
+          <strong>{{ jewel.qty }} Sold</strong>
         </span>
-        <div><strong>Sold:</strong> {{ jewel.qty }}</div>
       </div>
     </v-card-text>
   </v-card>
@@ -33,6 +46,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    url(img: String): String {
+      return `${process.env.apiUrl}/${img}`
+    },
     count() {
       this.loading = true
       $axios
@@ -40,6 +56,7 @@ export default Vue.extend({
         .then((r) => {
           this.loading = false
           this.jewels = r
+          console.log(this.jewels)
         })
         .catch((error) => {
           this.loading = false
@@ -53,14 +70,23 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.product-img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 4px;
+  margin-right: 1rem;
+}
 .chip {
-  background-color: var(--primary);
-  color: #FFF;
   border-radius: 4px;
   padding: 4px .8rem;
 }
+.chip:hover {
+  background-color: #efefef;
+  border-radius: 0px;
+}
 .chip span {
   word-break: initial;
+  /* padding-right: 1px; */
 }
 ::v-deep .v-chip__content {
   width: 100%;
@@ -75,4 +101,10 @@ export default Vue.extend({
     height: fit-content;
   }
 }
+@media screen and (max-width: 300px) {
+  .product-img {
+    display: none;
+  }
+}
+
 </style>

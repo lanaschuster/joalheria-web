@@ -1,6 +1,6 @@
 <template>
   <div class="my-container">
-    <h1 class="title text-h4 fw-500 mb-8">Dashboard</h1>
+    <h1 class="title text-h4 mb-8">Dashboard</h1>
 
     <div class="wrapper indicador-wrapper">
       <IndicadorSales class="indicador" />
@@ -10,9 +10,13 @@
       <IndicadorCategories class="indicador" />
       <IndicadorUsers class="indicador" />
     </div>
+    <h2 class="title text-h5 fw-500 mb-4">Sales</h2>
     <div class="wrapper grafico-wrapper">
       <MostRecentSales class="grafico" />
       <BestSellingProducts class="grafico" />
+    </div>
+    <h2 class="title text-h5 fw-500 mb-4">Jewels</h2>
+    <div class="wrapper grafico-wrapper">
       <ProductsByCategory />
       <ProductsByProvider />
     </div>
@@ -111,7 +115,7 @@ export default Vue.extend({
 .grafico-wrapper {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(4, 23.7%);
+  grid-template-columns: repeat(3, 32.4%);
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1260px){
