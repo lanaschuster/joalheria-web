@@ -1,55 +1,32 @@
 <template>
   <div class="component">
-    <h1 class="title text-h4 mb-8 fw-500">My Account</h1>
-    <v-row justify="center">
-      <v-col cols="12" sm="12" md="12">
-        <v-card class="mb-6">
-          <v-card-text>
-            <v-row>
-              <v-col
-                cols="12"
-                sm="12"
-                md="4"
-                class="d-flex align-center justify-center"
-              >
-                <v-hover v-slot="{ hover }">
-                  <v-avatar size="240">
-                    <v-img
-                      lazy-src="/img/image.svg"
-                      style="position: absolute"
-                      :src="imagePreview"
-                      alt="Avatar"
-                    >
-                    </v-img>
+    <div class="cover"></div>
+    <v-hover v-slot="{ hover }" class="avatar">
+      <v-avatar class="avatar-img">
+        <v-img
+          lazy-src="/img/image.svg"
+          style="position: absolute"
+          :src="imagePreview"
+          alt="Avatar"
+        >
+        </v-img>
 
-                    <v-img v-if="hover" src="/img/image-hover.svg" alt="Avatar">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style="opacity: 0; cursor: pointer"
-                        @change="changeImage($event)"
-                      />
-                    </v-img>
-                  </v-avatar>
-                </v-hover>
-              </v-col>
-              <v-col cols="12" sm="12" md="8" class="text-body-1 d-flex align-center flex-column">
-                
-                <label class="font-weight-bold">Nome</label>
-                <span>{{ `${user.name} ${user.lastName}` }}</span>
+        <v-img v-if="hover" src="/img/image-hover.svg" alt="Avatar">
+          <input
+            type="file"
+            accept="image/*"
+            style="opacity: 0; cursor: pointer"
+            @change="changeImage($event)"
+          />
+        </v-img>
+      </v-avatar>
+    </v-hover>
 
-                <label class="font-weight-bold">Função</label>
-                <span>{{ user.role.name }}</span>
-              
-
-                <label class="font-weight-bold">E-mail</label>
-                <span>{{ user.email }}</span>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div>
+      <span class="name">{{ `${user.name} ${user.lastName}` }}</span>
+      <span class="description">{{ user.role.name }}</span>
+      <span class="description">{{ user.email }}</span>
+    </div>
   </div>
 </template>
 
@@ -70,7 +47,7 @@ export default Vue.extend({
         name: '',
         lastName: '',
         email: '',
-        avatar: '/img/image.svg'
+        avatar: '/img/image.svg',
       },
       imagePreview: '/img/image.svg',
     }
@@ -122,7 +99,7 @@ export default Vue.extend({
         .catch((error) => {
           this.loading = false
         })
-    }
+    },
   },
   created() {
     this.find()
@@ -131,4 +108,63 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.component {
+  display: flex;
+  flex-wrap: wrap;
+}
+.avatar-img {
+  width: 240px !important;
+  height: 240px !important;
+  margin-left: 2rem;
+}
+.cover {
+  height: 16rem;
+  width: 100%;
+  border-radius: 6px;
+  background: url('/img/ring_cover.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 1rem;
+}
+.avatar {
+  display: flex;
+  justify-content: center;
+  margin-top: -80px !important;
+}
+.component div span {
+  margin-left: 1rem;
+  display: block;
+}
+.name {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+@media screen and (min-width: 427px) and (max-width: 1224px){
+  .avatar-img {
+    width: 160px !important;
+    height: 160px !important;
+    margin-left: 1rem;
+  }
+  .component div {
+    position: initial;
+    margin-left: 1rem;
+  }
+  .name {
+    margin-top: 0px;
+  }
+}
+@media screen and (max-width: 426px) {
+  .avatar-img {
+    width: 160px !important;
+    height: 160px !important;
+    margin: 0 auto;
+  }
+  .component div {
+    margin: 0 auto;
+  }
+  .component div span {
+    text-align: center;
+    margin-left: 0;
+  }
+}
 </style>

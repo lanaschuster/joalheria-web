@@ -237,4 +237,15 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width: 301px) and (max-width: 1056px){
+  ::v-deep .container {
+    padding: 6px;
+    margin: 6px;
+  }
+}
+@media screen and (max-width: 300px) {
+  ::v-deep .container {
+    padding: 6px;
+  }
+}
 </style>
