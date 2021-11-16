@@ -1,8 +1,5 @@
 <template>
   <v-row>
-    <v-col cols="12" sm="12" md="12" class="d-flex align-center justify-end">
-      <v-btn @click="newSale" color="success" v-if="canAdd"> New sale </v-btn>
-    </v-col>
     <v-col cols="12" md="12">
       <v-data-table
         no-data-text="Nenhuma venda registrada."

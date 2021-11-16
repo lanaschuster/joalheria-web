@@ -8,9 +8,6 @@
         placeholder="Search by name"
       ></v-text-field>
     </v-col>
-    <v-col cols="12" sm="12" md="9" class="d-flex justify-end">
-      <v-btn @click="add" color="success"> New Category </v-btn>
-    </v-col>
     <v-col cols="12" md="12">
       <v-data-table
         no-data-text="Nenhuma categoria cadastrada."
@@ -128,9 +125,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    add() {
-      screen.setMode(Mode.ADD)
-    },
     find() {
       this.loading = true
       

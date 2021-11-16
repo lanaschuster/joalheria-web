@@ -8,9 +8,6 @@
         placeholder="Search by name or e-mail"
       ></v-text-field>
     </v-col>
-    <v-col cols="12" sm="12" md="9" class="d-flex align-center justify-end">
-      <v-btn @click="novoUsuario" color="success" v-if="canAddUser"> New user </v-btn>
-    </v-col>
     <v-col cols="12" md="12">
       <v-data-table
         no-data-text="Nenhum usuário cadastrado."

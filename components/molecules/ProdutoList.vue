@@ -8,13 +8,6 @@
         placeholder="Type to search by description or code"
       ></v-text-field>
     </v-col>
-    <v-col 
-      cols="12" sm="12" md="9" 
-      class="d-flex align-center justify-end">
-      <v-btn @click="add" color="success" v-if="canAdd">
-        New Product
-      </v-btn>
-    </v-col>
     <v-col cols="12" sm="12" md="12">
       <v-data-table
         no-data-text="Nenhum produto cadastrado."

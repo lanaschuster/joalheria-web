@@ -1,8 +1,5 @@
 <template>
   <v-row>
-    <v-col cols="12" sm="12" md="12" class="d-flex justify-end">
-      <v-btn @click="add" color="success" v-if="canAddPermission"> New Profile </v-btn>
-    </v-col>
     <v-col cols="12" md="12">
       <v-data-table
         no-data-text="No profile registered."

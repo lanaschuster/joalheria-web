@@ -1,7 +1,12 @@
 <template>
   <div class="component">
-    <h1 class="title text-h4 mb-2 fw-500">{{ title }}</h1>
-    <h4 class="subtitle text-subtitle-1 mb-8">{{ subtitle }}</h4>
+    <CrudHeader
+      :title="title"
+      :subtitle="subtitle"
+      :isListMode="isListMode"
+      :canAdd="true"
+      @add="add"
+    />
     <v-row>
       <v-col cols="12" sm="12" md="12">
         <CategoriaList
@@ -28,7 +33,8 @@ import { Mode } from '@/models'
 import { 
   CategoriaList,
   CategoriaForm,
-  CategoriaDeleteDialog
+  CategoriaDeleteDialog,
+  CrudHeader
 } from '@/components/molecules'
 import { screen } from '@/store'
 
@@ -36,7 +42,8 @@ export default Vue.extend({
   components: {
     CategoriaList,
     CategoriaForm,
-    CategoriaDeleteDialog
+    CategoriaDeleteDialog,
+    CrudHeader
   },
   data() {
     return {
@@ -71,7 +78,12 @@ export default Vue.extend({
     },
     isListMode() {
       return screen.$mode === Mode.LIST
-    }
+    },
+  },
+  methods: {
+    add() {
+      screen.setMode(Mode.ADD)
+    },
   },
   created() {
     screen.setMode(Mode.LIST)

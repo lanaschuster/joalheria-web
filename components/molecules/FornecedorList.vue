@@ -8,9 +8,6 @@
         placeholder="Search by name or description"
       ></v-text-field>
     </v-col>
-    <v-col cols="12" sm="12" md="9" class="d-flex justify-end">
-      <v-btn @click="add" color="success" v-if="canAdd"> New Supplier </v-btn>
-    </v-col>
     <v-col cols="12" md="12">
       <v-data-table
         no-data-text="Nenhum fornecedor cadastrado."

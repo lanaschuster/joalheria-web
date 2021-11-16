@@ -1,7 +1,11 @@
 <template>
   <div class="component">
-    <h1 class="title text-h4 mb-2 fw-500">{{ title }}</h1>
-    <h4 class="subtitle text-subtitle-1 mb-8">{{ subtitle }}</h4>
+    <CrudHeader
+      :title="title"
+      :subtitle="subtitle"
+      :isListMode="isListMode"
+      :canAdd="canAdd"
+      @add="add" />
     <v-row>
       <v-col cols="12" sm="12" md="12">
         <UsuarioList
@@ -24,15 +28,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Mode } from '@/models'
-import { UsuarioList, UsuarioForm, UsuarioDeleteDialog } from '@/components/molecules'
-import { screen } from '@/store'
+import { Mode, Module, Action } from '@/models'
+import { UsuarioList, UsuarioForm, UsuarioDeleteDialog, CrudHeader } from '@/components/molecules'
+import { screen, auth } from '@/store'
 
 export default Vue.extend({
   components: {
     UsuarioList,
     UsuarioForm,
-    UsuarioDeleteDialog
+    UsuarioDeleteDialog,
+    CrudHeader
   },
   data() {
     return {
@@ -67,7 +72,19 @@ export default Vue.extend({
     },
     isListMode() {
       return screen.$mode === Mode.LIST
-    }
+    },
+    canAdd() {
+      const permissions = auth.$permissions
+      return permissions.find(p => {
+        return p.module === Module.USERS &&
+          (p.action === Action.ALL || p.action === Action.WRITE)
+      })
+    },
+  },
+  methods: {
+    add() {
+      screen.setMode(Mode.ADD)
+    },
   },
   created() {
     screen.setMode(Mode.LIST)
